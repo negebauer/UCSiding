@@ -22,21 +22,7 @@ pod "UCSiding"
 
 ## Credentials
 
-For testing you must provide your own Credentials in [`UCSiding/UCSTestCredentials.swift`](./UCSiding/UCSTestCredentials.swift)    
-```swift
-public struct UCSTestCredentials {
-
-    /// A valid username for the SIDING without `@uc.cl`
-    public func username() -> String {
-        return "myUsername"
-    }
-
-    /// The password for the `username()` user
-    public func password() -> String {
-        return "myPassword"
-    }
-}
-```
+For testing to succeed you must provide your own Credentials in [`UCSiding/UCSTestCredentials.swift`](./UCSiding/UCSTestCredentials.swift)    
 
 ## Author
 
