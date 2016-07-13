@@ -10,7 +10,7 @@
 		00AE57A81B9459F0CC5675396889BC92 /* QuickSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B1CD927C84BF88F645AF7B8B37747E /* QuickSpec.m */; };
 		0292E78325F835CBA520B9DE5072EDF3 /* World+DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = D38FE9CF7BA8C995E0FF0E5AD615BD07 /* World+DSL.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		03A9FD93E86C0CD07A37D7BF34A02F09 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9413721A08C219D0AD9A32BF9AD8C6 /* Match.swift */; };
-		03D8C3BD1D3630C000435FAD /* UCSTestCredentials.Swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D8C3BC1D3630C000435FAD /* UCSTestCredentials.Swift */; };
+		03D8C3BD1D3630C000435FAD /* UCSTestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D8C3BC1D3630C000435FAD /* UCSTestCredentials.swift */; };
 		05241BC80155C9ACB9D09CA9820BE4AF /* NetworkingImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9270FABF9B43CA4D369F620E16B8B744 /* NetworkingImage.swift */; };
 		0932706B4FB549E21C32D3907E5AF325 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6079806F4E4F4CEC2FD9A0E6EAA85177 /* Example.swift */; };
 		0FE698D57E19CE10BC86E497CB41D11A /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0D076CE227BFD902A3D353A133371E /* Networking.swift */; };
@@ -168,7 +168,7 @@
 		0338D83347C3995994CE0CE11DF05DC0 /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
 		035D9B56477B76BCABC94D6159F4F0F0 /* HooksPhase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HooksPhase.swift; path = Sources/Quick/Hooks/HooksPhase.swift; sourceTree = "<group>"; };
 		03B40CEB325CEF6E01E2CA3DC96FF78B /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		03D8C3BC1D3630C000435FAD /* UCSTestCredentials.Swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSTestCredentials.Swift; sourceTree = "<group>"; };
+		03D8C3BC1D3630C000435FAD /* UCSTestCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSTestCredentials.swift; sourceTree = "<group>"; };
 		060586D7A60EDDB5B17476AC201D7314 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		089B60E2095208E7563814B8B92ACAEE /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkActivityIndicator.swift; path = Sources/NetworkActivityIndicator.swift; sourceTree = "<group>"; };
 		0AE16E40432E190E0C63DEE3CA911C66 /* Pods-UCSiding_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-UCSiding_Tests-resources.sh"; sourceTree = "<group>"; };
@@ -559,7 +559,7 @@
 			children = (
 				53986C43C41B936CA3E9C6760246BE43 /* UCSSession.swift */,
 				5BCA27C155DDCC60838CD4F8DC0B15E5 /* UCSURL.swift */,
-				03D8C3BC1D3630C000435FAD /* UCSTestCredentials.Swift */,
+				03D8C3BC1D3630C000435FAD /* UCSTestCredentials.swift */,
 			);
 			path = UCSiding;
 			sourceTree = "<group>";
@@ -968,7 +968,7 @@
 				FB0D0157FBBAC62FD73FEC53FEDBAE2E /* NSFileManager+Helpers.swift in Sources */,
 				29F5BC45E80E494F7C58C9A7A6CCE795 /* String+UTF8.swift in Sources */,
 				247976061281BE7D86D396C4EAE48931 /* TestCheck.swift in Sources */,
-				03D8C3BD1D3630C000435FAD /* UCSTestCredentials.Swift in Sources */,
+				03D8C3BD1D3630C000435FAD /* UCSTestCredentials.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

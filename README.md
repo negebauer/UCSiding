@@ -22,7 +22,7 @@ pod "UCSiding"
 
 ## Credentials
 
-For testing you must provide your own Credentials in [UCSTestCredentials.Swift](./UCSiding/UCSTestCredentials.Swift)
+For testing you must provide your own Credentials in [UCSTestCredentials.Swift](./UCSiding/UCSTestCredentials.swift)
 
 ## Author
 
