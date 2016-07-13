@@ -31,6 +31,7 @@
 /* Begin PBXFileReference section */
 		031035811D3627D20055FF30 /* .jazzy.yaml */ = {isa = PBXFileReference; lastKnownFileType = text; name = .jazzy.yaml; path = ../.jazzy.yaml; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		031035821D3629A40055FF30 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		031035831D362B7E0055FF30 /* Commands.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Commands.md; path = ../Commands.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
 		03A7E7CB1D35D2F4007424C6 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		03A7E7CC1D35D309007424C6 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../.gitignore; sourceTree = "<group>"; };
 		1587BF89C40FA9EB7886DD00 /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = LICENSE.md; path = ../LICENSE.md; sourceTree = "<group>"; };
@@ -153,6 +154,7 @@
 				03A7E7CB1D35D2F4007424C6 /* .travis.yml */,
 				031035811D3627D20055FF30 /* .jazzy.yaml */,
 				03A7E7CC1D35D309007424C6 /* .gitignore */,
+				031035831D362B7E0055FF30 /* Commands.md */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";

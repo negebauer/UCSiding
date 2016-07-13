@@ -27,5 +27,3 @@ Nicolás Gebauer, negebauer@uc.cl
 ## License
 
 UCSiding is available under the MIT license. See the [LICENSE](./LICENSE.md) file for more info.
-
-[//]: # (pod trunk push UCSiding.podspec)
