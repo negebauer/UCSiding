@@ -13,8 +13,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-UCSiding is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+UCSiding is available through [CocoaPods](http://cocoapods.org)  
+To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod "UCSiding"
@@ -22,7 +22,7 @@ pod "UCSiding"
 
 ## Credentials
 
-For testing you must provide your own Credentials in [UCSTestCredentials.Swift](./UCSiding/UCSTestCredentials.Swift).
+For testing you must provide your own Credentials in [UCSTestCredentials.Swift](./UCSiding/UCSTestCredentials.Swift)
 
 ## Author
 
@@ -30,4 +30,4 @@ Nicolás Gebauer, negebauer@uc.cl
 
 ## License
 
-UCSiding is available under the MIT license. See the [LICENSE](./LICENSE.md) file for more info.
+UCSiding is available under the MIT license. See the [LICENSE](./LICENSE.md) file for more info
