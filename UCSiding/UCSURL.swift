@@ -6,6 +6,7 @@
 //
 //
 
+/// Container for siding's URLs
 public struct UCSURL {
     
     public static let domain = "intrawww.ing.puc.cl"
