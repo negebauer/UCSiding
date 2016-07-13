@@ -1,2 +1,3 @@
 podspec: UCSiding.podspec
-module: UCSiding
+
+clean: true

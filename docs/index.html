@@ -13,7 +13,7 @@
     <a title="UCSiding  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">UCSiding Docs</a> (40% documented)</p>
+        <p><a href="index.html">UCSiding Docs</a> (50% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -38,6 +38,9 @@
             <a href="Structs.html">Structs</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Structs/UCSTestCredentials.html">UCSTestCredentials</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Structs/UCSURL.html">UCSURL</a>
               </li>
             </ul>
@@ -60,19 +63,35 @@
 <a href='#requirements' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='requirements'>Requirements</h2>
 <a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
 
-<p>UCSiding is available through <a href="http://cocoapods.org">CocoaPods</a>. To install
-it, simply add the following line to your Podfile:</p>
+<p>UCSiding is available through <a href="http://cocoapods.org">CocoaPods</a><br>
+To install it, simply add the following line to your Podfile:</p>
 <pre class="highlight ruby"><code><span class="n">pod</span> <span class="s2">"UCSiding"</span>
 </code></pre>
 <a href='#credentials' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='credentials'>Credentials</h2>
 
-<p>For testing you must provide your own Credentials in <a href="./UCSiding/UCSTestCredentials.Swift">UCSTestCredentials.Swift</a>.</p>
+<p>For testing you must provide your own Credentials in <code>UCSiding/UCSTestCredentials.swift</code><br>
+In order to do so, create a file called QQ, copy and paste the following in it<br>
+&ldquo;`swift
+public struct UCSTestCredentials {</p>
+<pre class="highlight plaintext"><code>/// A valid username for the SIDING without `@uc.cl`
+public func username() -&gt; String {
+    return "myUsername"
+}
+
+/// The password for the `username()` user
+public func password() -&gt; String {
+    return "myPassword"
+}
+</code></pre>
+
+<p>}
+&rdquo;`</p>
 <a href='#author' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='author'>Author</h2>
 
 <p>Nicolás Gebauer, <a href="mailto:negebauer@uc.cl">negebauer@uc.cl</a></p>
 <a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
 
-<p>UCSiding is available under the MIT license. See the <a href="./LICENSE.md">LICENSE</a> file for more info.</p>
+<p>UCSiding is available under the MIT license. See the <a href="./LICENSE.md">LICENSE</a> file for more info</p>
 
           </section>
         </section>
