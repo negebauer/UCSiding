@@ -1,12 +1,12 @@
 public struct UCSTestCredentials {
 
     /// A valid username for the SIDING without `@uc.cl`
-    public func username() -> String {
+    public static func username() -> String {
         return "myUsername"
     }
 
     /// The password for the `username()` user
-    public func password() -> String {
+    public static func password() -> String {
         return "myPassword"
     }
 }
