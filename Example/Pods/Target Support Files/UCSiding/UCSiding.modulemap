@@ -1,0 +1,6 @@
+framework module UCSiding {
+  umbrella header "UCSiding-umbrella.h"
+
+  export *
+  module * { export * }
+}
