@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '9.0'
     s.osx.deployment_target = '10.11'
     
-    s.source_files = 'UCSiding/Classes/**/*'
+    s.source_files = 'UCSiding/**/*'
     
     # s.resource_bundles = {
     #   'UCSiding' => ['UCSiding/Assets/*.png']

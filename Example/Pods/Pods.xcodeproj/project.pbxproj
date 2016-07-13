@@ -10,6 +10,7 @@
 		00AE57A81B9459F0CC5675396889BC92 /* QuickSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B1CD927C84BF88F645AF7B8B37747E /* QuickSpec.m */; };
 		0292E78325F835CBA520B9DE5072EDF3 /* World+DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = D38FE9CF7BA8C995E0FF0E5AD615BD07 /* World+DSL.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		03A9FD93E86C0CD07A37D7BF34A02F09 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9413721A08C219D0AD9A32BF9AD8C6 /* Match.swift */; };
+		03B61D5E1D3623B600D86DD0 /* UCSSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B61D5D1D3623B600D86DD0 /* UCSSession.swift */; };
 		05241BC80155C9ACB9D09CA9820BE4AF /* NetworkingImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9270FABF9B43CA4D369F620E16B8B744 /* NetworkingImage.swift */; };
 		0932706B4FB549E21C32D3907E5AF325 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6079806F4E4F4CEC2FD9A0E6EAA85177 /* Example.swift */; };
 		0FE698D57E19CE10BC86E497CB41D11A /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0D076CE227BFD902A3D353A133371E /* Networking.swift */; };
@@ -93,7 +94,6 @@
 		BCC2F2571C7584F621E339C95869D299 /* UCSiding-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05370552D3AAFC82F762E5D917941D88 /* UCSiding-dummy.m */; };
 		BF46E09A61B936EEAB5196EDDEF7B50B /* NSString+QCKSelectorName.h in Headers */ = {isa = PBXBuildFile; fileRef = 37D2B4F78E81FA16AA2C702C2F5E44C6 /* NSString+QCKSelectorName.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C12E0930E021F1894B60BC6AFA8F2409 /* AdapterProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394AC72E5A37288EE75A1A8A2515C448 /* AdapterProtocols.swift */; };
-		C24A8EDC04A15E582FB3D629C67C6D20 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770F8F9C5F6336269C74CACF72CDAC4 /* ReplaceMe.swift */; };
 		C545D958BE5E6E5DB211A11527A84497 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACFFA5191D1EB7407F7A179182ED02A /* JSON.swift */; };
 		C81F1975B1B82C18BA1E0FF0A0E4953A /* Networking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAFA9D072E4CDD1A4747B49828815832 /* Networking-dummy.m */; };
 		C81FFEEC76399EF3C7C1EE349C810E76 /* NimbleXCTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5697594588E5F577BCDF04E49D5E7DD6 /* NimbleXCTestHandler.swift */; };
@@ -166,6 +166,7 @@
 		0338D83347C3995994CE0CE11DF05DC0 /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
 		035D9B56477B76BCABC94D6159F4F0F0 /* HooksPhase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HooksPhase.swift; path = Sources/Quick/Hooks/HooksPhase.swift; sourceTree = "<group>"; };
 		03B40CEB325CEF6E01E2CA3DC96FF78B /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		03B61D5D1D3623B600D86DD0 /* UCSSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UCSSession.swift; sourceTree = "<group>"; };
 		05370552D3AAFC82F762E5D917941D88 /* UCSiding-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UCSiding-dummy.m"; sourceTree = "<group>"; };
 		060586D7A60EDDB5B17476AC201D7314 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		089B60E2095208E7563814B8B92ACAEE /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkActivityIndicator.swift; path = Sources/NetworkActivityIndicator.swift; sourceTree = "<group>"; };
@@ -272,7 +273,6 @@
 		B514A1259372B7847827F0E157B1A511 /* SuiteHooks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SuiteHooks.swift; path = Sources/Quick/Hooks/SuiteHooks.swift; sourceTree = "<group>"; };
 		B5A8007B18D9D9B2726EDF3DD5020A1E /* DSL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DSL.h; path = Sources/Nimble/objc/DSL.h; sourceTree = "<group>"; };
 		B5E8480EFCE334E03AD283CA6F23AB76 /* SourceLocation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SourceLocation.swift; path = Sources/Nimble/Utils/SourceLocation.swift; sourceTree = "<group>"; };
-		B770F8F9C5F6336269C74CACF72CDAC4 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReplaceMe.swift; sourceTree = "<group>"; };
 		B9BD2EB89EE2088B03D51872A60845D1 /* MatcherProtocols.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MatcherProtocols.swift; path = Sources/Nimble/Matchers/MatcherProtocols.swift; sourceTree = "<group>"; };
 		BA0D076CE227BFD902A3D353A133371E /* Networking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Networking.swift; path = Sources/Networking.swift; sourceTree = "<group>"; };
 		BA2154028EB8617C8474F31A25B2B00E /* Pods-UCSiding_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-UCSiding_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -447,17 +447,9 @@
 		62FB49B1607EDC69475A8F4B1F442CEB /* UCSiding */ = {
 			isa = PBXGroup;
 			children = (
-				67737952EBA49C71F648ADCD6305FE28 /* Classes */,
+				03B61D5D1D3623B600D86DD0 /* UCSSession.swift */,
 			);
 			path = UCSiding;
-			sourceTree = "<group>";
-		};
-		67737952EBA49C71F648ADCD6305FE28 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				B770F8F9C5F6336269C74CACF72CDAC4 /* ReplaceMe.swift */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		722CC47EEB6C4A9FFFFC360F885CC674 /* Quick */ = {
@@ -958,7 +950,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C24A8EDC04A15E582FB3D629C67C6D20 /* ReplaceMe.swift in Sources */,
 				BCC2F2571C7584F621E339C95869D299 /* UCSiding-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -968,6 +959,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFD94CCB907EA3A039E4A050BDCF8B50 /* Dictionary+FormURLEncoded.swift in Sources */,
+				03B61D5E1D3623B600D86DD0 /* UCSSession.swift in Sources */,
 				4A8DAE52AB0C95B325B265BE1FC50654 /* FormDataPart.swift in Sources */,
 				C545D958BE5E6E5DB211A11527A84497 /* JSON.swift in Sources */,
 				685710E225D67219A54C0622258C1837 /* NetworkActivityIndicator.swift in Sources */,
