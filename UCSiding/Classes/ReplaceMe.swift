@@ -9,4 +9,8 @@ public class Test {
     public func test() {
         print("test")
     }
+    
+    public func test2() {
+        print("test2")
+    }
 }
