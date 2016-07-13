@@ -22,8 +22,8 @@ pod "UCSiding"
 
 ## Author
 
-negebauer, negebauer@uc.cl
+Nicolás Gebauer, negebauer@uc.cl
 
 ## License
 
-UCSiding is available under the MIT license. See the LICENSE file for more info.
+UCSiding is available under the MIT license. See the [LICENSE]() file for more info.
