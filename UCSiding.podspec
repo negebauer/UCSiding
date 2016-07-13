@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     #   * Finally, don't worry about the indent, CocoaPods strips it!
     
     s.description      = <<-DESC
-    TODO: Add long description of the pod here.
+        - Access the SIDING in an easy way!
     DESC
     
     s.homepage         = 'https://github.com/negebauer/UCSiding'
@@ -30,6 +30,8 @@ Pod::Spec.new do |s|
     
     s.ios.deployment_target = '9.0'
     s.osx.deployment_target = '10.11'
+    s.watchos.deployment_target = '2.0'
+    s.tvos.deployment_target = '9.0'
     
     s.source_files = 'UCSiding/**/*'
     
@@ -39,5 +41,5 @@ Pod::Spec.new do |s|
     
     # s.public_header_files = 'Pod/Classes/**/*.h'
     # s.frameworks = 'UIKit', 'MapKit'
-    s.dependency 'Networking', '~> 1'
+    s.dependency 'Alamofire', '~> 3.3.0'
 end
