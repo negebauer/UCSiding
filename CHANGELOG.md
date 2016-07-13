@@ -25,5 +25,5 @@ Based of [Keep a Changelog](http://keepachangelog.com)
 #### Added
 - Pod setup
 
-[Unreleased]: https://github.com/negebauer/SIncDING/compare/0.1.1...dev
-[0.1.1]: https://github.com/negebauer/SIncDING/compare/0.1.0...0.1.1
+[Unreleased]: https://github.com/negebauer/UCSiding/compare/0.1.1...dev
+[0.1.1]: https://github.com/negebauer/UCSiding/compare/0.1.0...0.1.1
