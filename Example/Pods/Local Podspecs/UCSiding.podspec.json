@@ -2,7 +2,7 @@
   "name": "UCSiding",
   "version": "0.1.2",
   "summary": "API exposing the SIDING",
-  "description": "TODO: Add long description of the pod here.",
+  "description": "- Access the SIDING in an easy way!",
   "homepage": "https://github.com/negebauer/UCSiding",
   "license": {
     "type": "MIT",
@@ -18,12 +18,14 @@
   "social_media_url": "https://twitter.com/negebauer",
   "platforms": {
     "ios": "9.0",
-    "osx": "10.11"
+    "osx": "10.11",
+    "watchos": "2.0",
+    "tvos": "9.0"
   },
   "source_files": "UCSiding/**/*",
   "dependencies": {
-    "Networking": [
-      "~> 1"
+    "Alamofire": [
+      "~> 3.3.0"
     ]
   }
 }
