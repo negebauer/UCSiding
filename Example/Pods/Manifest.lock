@@ -2,7 +2,7 @@ PODS:
   - Networking (1.1.0)
   - Nimble (3.2.0)
   - Quick (0.9.2)
-  - UCSiding (0.1.1):
+  - UCSiding (0.1.2):
     - Networking (~> 1)
 
 DEPENDENCIES:
@@ -19,7 +19,7 @@ SPEC CHECKSUMS:
   Networking: 20a1714d673bc077aad2bd2d539007ea6087662f
   Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
-  UCSiding: 01bb44fd74d8fa194aee97674acd22c7145f6202
+  UCSiding: 0d35886ea6038d5540fea1bbd4698f1cdbb1da94
 
 PODFILE CHECKSUM: b067c5fb650257b7975a5b76189df848ab2bd290
 
