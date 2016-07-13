@@ -20,6 +20,10 @@ it, simply add the following line to your Podfile:
 pod "UCSiding"
 ```
 
+## Credentials
+
+For testing you must provide your own Credentials in [UCSTestCredentials.Swift](./UCSiding/UCSTestCredentials.Swift).
+
 ## Author
 
 Nicolás Gebauer, negebauer@uc.cl
