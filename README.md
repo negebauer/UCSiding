@@ -22,8 +22,7 @@ pod "UCSiding"
 
 ## Credentials
 
-For testing you must provide your own Credentials in `UCSiding/UCSTestCredentials.swift`  
-In order to do so, create a file called QQ, copy and paste the following in it  
+For testing you must provide your own Credentials in [`UCSiding/UCSTestCredentials.swift`](./UCSiding/UCSTestCredentials.swift)    
 ```swift
 public struct UCSTestCredentials {
 
