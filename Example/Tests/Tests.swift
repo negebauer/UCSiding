@@ -15,21 +15,14 @@ class TableOfContentsSpec: QuickSpec {
             
             sessionCorrect.login()
             sessionIncorrect.login()
+            sleep(1)
             
             it("can login") {
-                waitUntil { done in
-                    NSThread.sleepForTimeInterval(0.5)
-                    expect(sessionCorrect.headers()) != [:]
-                    done()
-                }
+                expect(sessionCorrect.headers()) != [:]
             }
             
             it("can detect failed login") {
-                waitUntil { done in
-                    NSThread.sleepForTimeInterval(0.5)
-                    expect(sessionIncorrect.headers()) == [:]
-                    done()
-                }
+                expect(sessionIncorrect.headers()) == [:]
             }
         }
     }
