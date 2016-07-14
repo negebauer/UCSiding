@@ -20,9 +20,9 @@ To install it, simply add the following line to your Podfile:
 pod "UCSiding"
 ```
 
-## Credentials
+## Testing and Credentials
 
-For testing to succeed you must provide your own Credentials in [`UCSiding/UCSTestCredentials.swift`](./UCSiding/UCSTestCredentials.swift)    
+For testing to succeed you must provide your own Credentials in [`UCSiding/UCSTestCredentials.swift`](./UCSiding/UCSTestCredentials.swift)  
 
 ## Author
 
