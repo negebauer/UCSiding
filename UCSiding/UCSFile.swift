@@ -14,32 +14,56 @@ public class UCSFile {
     
     // MARK: - Constants
     
-    public let course: UCSCourse
+    private let _course: UCSCourse
+    public lazy var course: UCSCourse = { return self._course }()
+    /// The path of the folder that contains this file
     public let path: String
     public let name: String
+    public let url: String
+    
+    private var checked = false
+    public var isChecked: Bool { return checked }
+    
+    public var idSidingFolder: String?
+    public var idSidingFile: String?
     
     // MARK: - Variables
     
     // MARK: - Init
     
-    public init(course: UCSCourse, filename name: String, path: String) {
-        self.course = course
+    public init(course: UCSCourse, filename name: String, path: String, url: String, idSidingFolder: String? = nil, idSidingFile: String? = nil) {
+        _course = course
         self.path = path
         self.name = name
+        self.url = url
+        self.idSidingFolder = idSidingFolder
+        self.idSidingFile = idSidingFile
+    }
+    
+    // MARK: - Functions
+    
+    public func justChecked() {
+        checked = true
+    }
+    
+    public func pathCompleted() -> String {
+        return "\(path)/\(name)"
     }
     
     // MARK: - Helpers
     
     public func isFile() -> Bool {
-        let split = name.componentsSeparatedByString(".")
-        if split.count > 1 && split[(split.count ?? 1) - 1].characters.count < 5 {
-            return true
-        }
-        return false
+        return url.containsString("descarga")
     }
     
     public func isFolder() -> Bool {
         return !isFile()
     }
     
+}
+
+extension UCSFile: CustomStringConvertible {
+    public var description: String {
+        return "(\(isFolder() ? "F" : "f")) \(name)\n\(path)\n\(url)"
+    }
 }

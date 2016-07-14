@@ -9,54 +9,86 @@
 import Alamofire
 import Kanna
 
-public protocol UCSCoursesDelegate {
+public protocol UCSCoursesDelegate: class {
     func coursesFound(courses: [UCSCourse])
+    func courseFoundFile(courses: [UCSCourse], course: UCSCourse, file: UCSFile)
 }
 
 /// Reads the courses in the Siding and allows interaction with them
-public class UCSCourses {
+public class UCSCourses: UCSCourseDelegate {
     
     // MARK: - Constants
     
     // MARK: - Variables
     
-    private var session: UCSSession
+    private var _session: UCSSession
+    public var session: UCSSession { return _session }
     
     private var _courses: [UCSCourse] = []
     public var courses: [UCSCourse] { return _courses }
     
-    public var delegate: UCSCoursesDelegate?
+    public weak var delegate: UCSCoursesDelegate?
     
     // MARK: - Init
     
     public init(session: UCSSession, delegate: UCSCoursesDelegate? = nil) {
-        self.session = session
+        _session = session
         self.delegate = delegate
     }
     
-    // MARK: - Functions
+    // MARK: - Courses scrapping
     
     /// Scraps the Siding to obtain the list of current courses for the current session
     public func loadCourses() {
         clearCourses()
-        getData(UCSURL.coursesURL, filter: "id_curso") { (elements: [XMLElement]) in
+        UCSUtils.getDataLink(UCSURL.coursesURL, headers: session.headers(), filter: "id_curso") { (elements: [XMLElement]) in
             elements.forEach({
-                print($0.text)
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let split = text.stringByReplacingOccurrencesOfString("s.", withString: "").componentsSeparatedByString(" ")
-                guard let section = Int(split[1]) where split.count >= 3 else { return }
+                let splitIdSiding = href.componentsSeparatedByString("id_curso_ic=")
+                guard let section = Int(split[1]) where split.count >= 3 && splitIdSiding.count >= 2 else { return }
                 let id = split[0]
+                let idSiding = splitIdSiding[1]
                 let name = split[2...(split.count - 1)].joinWithSeparator(" ")
                 let url = UCSURL.courseMainURL + href
-                let course = UCSCourse(id: id, name: name, url: url, section: section)
-                print(course)
+                let course = UCSCourse(id: id, idSiding: idSiding, name: name, url: url, section: section)
+                self.foundCourse(course)
             })
+            self.delegate?.coursesFound(self.courses)
         }
+    }
+    
+    /// Adds the provided `course` if it wasn't registered before
+    private func foundCourse(course: UCSCourse) {
+        guard getCourse(id: course.id) == nil else { return }
+        _courses.append(course)
     }
     
     /// Clears the current loaded courses
     public func clearCourses() {
         _courses = []
+    }
+    
+    // MARK: - Course scrapping
+    
+    /**
+     Search for files in all `courses`.
+    
+     `UCSCourses` sets itself as the delegate of each course to notify on each file discovery
+     */
+    public func loadCoursesFiles() {
+        courses.forEach({ course in
+            course.delegate = self
+            course.loadFiles()
+        })
+    }
+    
+    // MARK: - UCSCourseDelegate methods
+    
+    public func foundFile(course: UCSCourse, file: UCSFile) {
+        // TODO: Inform delegate
+        print(file)
+        print("Total: \(coursesCount() + _courses.map({ $0.files.count }).reduce(0, combine: +))")
     }
     
     // MARK: - Courses get
@@ -101,25 +133,7 @@ public class UCSCourses {
      - parameter session:     A valid `UCSSession`
      */
     public func updateSession(session: UCSSession) {
-        self.session = session
+        _session = session
         clearCourses()
-    }
- 
-    private func getData(link: String, filter: String..., checkData: (elements: [XMLElement]) -> Void) {
-        Alamofire.request(.GET, link, headers: session.headers())
-            .response { (_, response, data, error) in
-                if error != nil {
-                    print("Error: \(error!)")
-                } else {
-                    let stringData = data != nil ? UCSUtils.stringFromData(data!) : ""
-                    if let doc = Kanna.HTML(html: stringData, encoding: NSUTF8StringEncoding) {
-                        let elements = doc.xpath("//a | //link").filter({
-                            let href = $0["href"]
-                            return href != nil && filter.contains({ href!.containsString($0) })
-                        })
-                        checkData(elements: elements)
-                    }
-                }
-        }
     }
 }
