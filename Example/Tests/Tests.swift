@@ -6,6 +6,9 @@ import UCSiding
 
 class TableOfContentsSpec: QuickSpec {
     override func spec() {
+        
+        /// We can check the login by checking the session headers.
+        /// If the login succeeded, the header will contain the proper cookies.
         describe("login") {
             let sessionCorrect = UCSSession(username: UCSTestCredentials.username(), password: UCSTestCredentials.password())
             let sessionIncorrect = UCSSession(username: "", password: "")
