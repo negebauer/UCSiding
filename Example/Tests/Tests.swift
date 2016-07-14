@@ -6,7 +6,33 @@ import UCSiding
 
 class TableOfContentsSpec: QuickSpec {
     override func spec() {
-        describe("these will fail") {
+        describe("login") {
+            let sessionCorrect = UCSSession(username: UCSTestCredentials.username(), password: UCSTestCredentials.password())
+            let sessionIncorrect = UCSSession(username: "", password: "")
+            
+            sessionCorrect.login()
+            sessionIncorrect.login()
+            
+            it("can login") {
+                waitUntil { done in
+                    NSThread.sleepForTimeInterval(0.5)
+                    expect(sessionCorrect.headers()) != [:]
+                    done()
+                }
+            }
+            
+            it("can detect failed login") {
+                waitUntil { done in
+                    NSThread.sleepForTimeInterval(0.5)
+                    expect(sessionIncorrect.headers()) == [:]
+                    done()
+                }
+            }
+        }
+    }
+}
+
+//        describe("these will fail") {
 
 //            it("can do maths") {
 //                expect(1) == 2
@@ -19,7 +45,7 @@ class TableOfContentsSpec: QuickSpec {
 //            it("will eventually fail") {
 //                expect("time").toEventually( equal("done") )
 //            }
-            
+
 //            context("these will pass") {
 //
 //                it("can do maths") {
@@ -44,7 +70,5 @@ class TableOfContentsSpec: QuickSpec {
 //                        done()
 //                    }
 //                }
-            }
-        }
-    }
-}
+//            }
+//        }

@@ -10,7 +10,15 @@
 public struct UCSURL {
     
     public static let domain = "intrawww.ing.puc.cl"
-    private static let main = "https://\(domain)/siding"
-    public static let login =  "\(main)/index.phtml"
-    public static let courses = "\(main)/dirdes/ingcursos/cursos/vista.phtml"
+    
+    public static let main = "https://\(domain)/siding"
+    
+    public static let loginPath =  "/index.phtml"
+    public static let loginURL =  "\(main)/index.phtml"
+    
+    public static let coursesPath = "/dirdes/ingcursos/cursos/vista.phtml"
+    public static let coursesURL = "\(main)/dirdes/ingcursos/cursos/vista.phtml"
+    
+    public static let logoutPath =  "/logout.phtml"
+    public static let logoutURL =  "\(main)/logout.phtml"
 }

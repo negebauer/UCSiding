@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+internal struct UCSUtils {
+    
+    internal static func stringFromData(data: NSData) -> String {
+        let str = String(data: data, encoding: NSASCIIStringEncoding) ?? ""
+        return str
+    }
+}
