@@ -9,5 +9,7 @@ target 'UCSiding_Example' do
         
         pod 'Quick', '~> 0.8'
         pod 'Nimble', '~> 3.0'
+        pod 'Alamofire', '~> 3.3.0'
+        pod 'Kanna', '~> 1.1.0'
     end
 end

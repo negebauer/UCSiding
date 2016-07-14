@@ -8,6 +8,8 @@ PODS:
     - Kanna (~> 1.1.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 3.3.0)
+  - Kanna (~> 1.1.0)
   - Nimble (~> 3.0)
   - Quick (~> 0.8)
   - UCSiding (from `../`)
@@ -23,6 +25,6 @@ SPEC CHECKSUMS:
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
   UCSiding: 9796b538738ef70649a763e8b005e62d3addc035
 
-PODFILE CHECKSUM: 02fba1d0e4395dde4c4c25d289f5eb20cb9a3170
+PODFILE CHECKSUM: c3fb1177e6f3c214807caab5b8c09524f0e6527e
 
 COCOAPODS: 1.0.1
