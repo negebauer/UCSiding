@@ -21,4 +21,7 @@ public struct UCSURL {
     
     public static let logoutPath =  "/logout.phtml"
     public static let logoutURL =  "\(main)/logout.phtml"
+    
+    /// Append a course or file href to this url to have the course or file complete url
+    internal static let courseMainURL = "\(main)/dirdes/ingcursos/cursos/"
 }

@@ -17,12 +17,16 @@ public class UCSCourse {
     
     public var id: String
     public var name: String
+    public var url: String
+    public var section: Int
     
     // MARK: - Init
     
-    public init(id: String, name: String) {
+    public init(id: String, name: String, url: String, section: Int) {
         self.id = id
         self.name = name
+        self.url = url
+        self.section = section
     }
     
     // MARK: - Functions
