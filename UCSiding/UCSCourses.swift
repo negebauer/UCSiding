@@ -10,8 +10,8 @@ import Alamofire
 import Kanna
 
 public protocol UCSCoursesDelegate: class {
-    func coursesFound(courses: [UCSCourse])
-    func courseFoundFile(courses: [UCSCourse], course: UCSCourse, file: UCSFile)
+    func coursesFound(ucsCourses: UCSCourses, courses: [UCSCourse])
+    func courseFoundFile(ucsCourses: UCSCourses, courses: [UCSCourse], course: UCSCourse, file: UCSFile)
 }
 
 /// Reads the courses in the Siding and allows interaction with them
@@ -54,7 +54,7 @@ public class UCSCourses: UCSCourseDelegate {
                 let course = UCSCourse(id: id, idSiding: idSiding, name: name, url: url, section: section)
                 self.foundCourse(course)
             })
-            self.delegate?.coursesFound(self.courses)
+            self.delegate?.coursesFound(self, courses: self.courses)
         }
     }
     
@@ -86,9 +86,7 @@ public class UCSCourses: UCSCourseDelegate {
     // MARK: - UCSCourseDelegate methods
     
     public func foundFile(course: UCSCourse, file: UCSFile) {
-        // TODO: Inform delegate
-        print(file)
-        print("Total: \(coursesCount() + _courses.map({ $0.files.count }).reduce(0, combine: +))")
+        delegate?.courseFoundFile(self, courses: courses, course: course, file: file)
     }
     
     // MARK: - Courses get
@@ -127,6 +125,18 @@ public class UCSCourses: UCSCourseDelegate {
     }
     
     // MARK: - Helpers
+    
+    public func files() -> [UCSFile] {
+        return Array(courses.map({ $0.files }).flatten())
+    }
+    
+    public func numberOfFiles() -> Int {
+        return coursesCount() + courses.map({ $0.files.count }).reduce(0, combine: +)
+    }
+    
+    public func numberOfCheckedFiles() -> Int {
+        return courses.count + courses.map({ $0.files.filter({ $0.isChecked }).count }).reduce(0, combine: +)
+    }
     
     /**
      Updates the current session. You should update the courses data after calling this method

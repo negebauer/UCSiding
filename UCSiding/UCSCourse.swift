@@ -74,6 +74,7 @@ public class UCSCourse {
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
             folder.justChecked()
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
+                // TODO: Get Siding ID
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
@@ -81,6 +82,7 @@ public class UCSCourse {
                 self.foundFolder(file)
             })
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
+                // TODO: Get Siding ID
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let hrefDuplicate = "/siding/dirdes/ingcursos/cursos/"
@@ -107,12 +109,19 @@ public class UCSCourse {
     
     // MARK: - Helpers
     
-    private func pathForChildren() -> String {
+    public func pathForChildren() -> String {
         return "\(id) \(name)"
     }
     
     private func headers() -> [String: String]? {
         return delegate?.session.headers()
+    }
+    
+    public func numberOfFiles() -> (total: Int, files: Int, folders: Int) {
+        let filesC = files.filter({ $0.isFile() }).count
+        let folders = files.filter({ $0.isFolder() }).count
+        let total = filesC + folders + 1
+        return (total, filesC, folders)
     }
 }
 
@@ -121,55 +130,3 @@ extension UCSCourse: CustomStringConvertible {
         return "\(id) \(section) \(name)"
     }
 }
-
-/*
- 
- 
- func checkFolder(file: File) {
- getData(file.link, filter: "vista.phtml?") { (elements: [XMLElement]) in
- file.checked = true
- elements.forEach({
- let folder = $0.text!
- let link = self.sidingSite.componentsSeparatedByString("vista.phtml")[0] + $0["href"]!
- let file = File(course: file.course, folder: folder, name: nil, link: link, parentPath: file.parentPath)
- self.discovered(file) {
- self.checkFolderContent($0)
- }
- })
- }
- }
- 
- func checkFolderContent(file: File) {
- getData(file.link, filter: "vista.phtml?", "id_archivo") { (elements: [XMLElement]) in
- file.checked = true
- elements.filter({ $0["href"]!.containsString("vista.phtml?") }).forEach({
- let folder = $0.text!
- let link = self.sidingSite.componentsSeparatedByString("vista.phtml")[0] + $0["href"]!
- let file = File(course: file.course, folder: "\(file.folder!)/\(folder)", name: nil, link: link, parentPath: file.parentPath)
- self.discovered(file) {
- self.checkFolderContent($0)
- }
- })
- elements.filter({ $0["href"]!.containsString("id_archivo") }).forEach({
- let name = $0.text!
- let link = self.sidingSite.componentsSeparatedByString("/siding/dirdes/ingcursos/cursos/vista.phtml")[0] + $0["href"]!
- let file = File(course: file.course, folder: file.folder!, name: name, link: link, parentPath: file.parentPath)
- self.discovered(file)
- })
- }
- }
- 
- func discovered(file: File?, newFile: ((file: File) -> Void)? = nil) {
- if let file = file {
- mainQueue({
- if !self.files.contains({ $0.link == file.link }) {
- self.files.append(file)
- newFile?(file: file)
- }
- self.checkIndexTask()
- })
- }
- checkIndexTask()
- }
- 
- */
