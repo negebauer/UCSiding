@@ -1,6 +1,6 @@
 # UCSiding
 
-[![CI Status](http://img.shields.io/travis/negebauer/UCSiding.svg?style=flat)](https://travis-ci.org/negebauer/UCSiding)
+[\\]: # ([![CI Status](http://img.shields.io/travis/negebauer/UCSiding.svg?style=flat)](https://travis-ci.org/negebauer/UCSiding))
 [![Version](https://img.shields.io/cocoapods/v/UCSiding.svg?style=flat)](http://cocoapods.org/pods/UCSiding)
 [![License](https://img.shields.io/cocoapods/l/UCSiding.svg?style=flat)](http://cocoapods.org/pods/UCSiding)
 [![Platform](https://img.shields.io/cocoapods/p/UCSiding.svg?style=flat)](http://cocoapods.org/pods/UCSiding)
