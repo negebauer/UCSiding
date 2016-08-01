@@ -14,13 +14,13 @@ public struct UCSURL {
     public static let main = "https://\(domain)/siding"
     
     public static let loginPath =  "/index.phtml"
-    public static let loginURL =  "\(main)/index.phtml"
+    public static let loginURL =  "\(main)\(loginPath)"
     
-    public static let coursesPath = "/dirdes/ingcursos/cursos/vista.phtml"
-    public static let coursesURL = "\(main)/dirdes/ingcursos/cursos/vista.phtml"
+    public static let coursesPath = "/dirdes/ingcursos/cursos/index.phtml"
+    public static let coursesURL = "\(main)\(coursesPath)"
     
     public static let logoutPath =  "/logout.phtml"
-    public static let logoutURL =  "\(main)/logout.phtml"
+    public static let logoutURL =  "\(main)\(logoutPath)"
     
     /// Append a course or file href to this url to have the course or file complete url
     internal static let courseMainURL = "\(main)/dirdes/ingcursos/cursos/"
