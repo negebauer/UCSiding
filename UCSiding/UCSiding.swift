@@ -1,5 +1,5 @@
 //
-//  UCSCourses.swift
+//  UCSiding.swift
 //  Pods
 //
 //  Created by Nicolás Gebauer on 13-07-16.
@@ -9,13 +9,13 @@
 import Alamofire
 import Kanna
 
-public protocol UCSCoursesDelegate: class {
-    func coursesFound(ucsCourses: UCSCourses, courses: [UCSCourse])
-    func courseFoundFile(ucsCourses: UCSCourses, courses: [UCSCourse], course: UCSCourse, file: UCSFile)
+public protocol UCSidingDelegate: class {
+    func coursesFound(siding: UCSiding, courses: [UCSCourse])
+    func courseFoundFile(siding: UCSiding, courses: [UCSCourse], course: UCSCourse, file: UCSFile)
 }
 
-/// Reads the courses in the Siding and allows interaction with them
-public class UCSCourses: UCSCourseDelegate {
+/// Interact with a session corresponding siding's
+public class UCSiding: UCSCourseDelegate {
     
     // MARK: - Constants
     
@@ -27,11 +27,11 @@ public class UCSCourses: UCSCourseDelegate {
     private var _courses: [UCSCourse] = []
     public var courses: [UCSCourse] { return _courses }
     
-    public weak var delegate: UCSCoursesDelegate?
+    public weak var delegate: UCSidingDelegate?
     
     // MARK: - Init
     
-    public init(session: UCSSession, delegate: UCSCoursesDelegate? = nil) {
+    public init(session: UCSSession, delegate: UCSidingDelegate? = nil) {
         _session = session
         self.delegate = delegate
     }
