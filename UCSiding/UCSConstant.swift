@@ -12,6 +12,6 @@ internal struct UCSConstant {
         return NSBundle.mainBundle().bundleIdentifier ?? "com.negebauer.ucsiding"
     }()
     
-    internal static let urlIdentifierFolder = "vista.phtml?"
-    internal static let urlIdentifierFile = "descarga"
+    internal static let urlIdentifierFolder = "vista.phtml"
+    internal static let urlIdentifierFile = "descarga.phtml"
 }
