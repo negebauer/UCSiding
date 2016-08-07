@@ -89,6 +89,14 @@ public class UCSiding: UCSCourseDelegate {
         delegate?.courseFoundFile(self, courses: courses, course: course, file: file)
     }
     
+    public func foundMainFiles(course: UCSCourse, files: [UCSFile]) {
+        print("Error: This call hasn't been implemented (UCSSiding.foundMainFiles)")
+    }
+    
+    public func foundFolderFiles(course: UCSCourse, folder: UCSFile, files: [UCSFile]) {
+        print("Error: This call hasn't been implemented (UCSSiding.foundFolderFiles)")
+    }
+    
     // MARK: - Courses get
     
     /// Gets a course by it's id, such as `IIC2233`

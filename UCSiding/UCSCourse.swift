@@ -12,6 +12,8 @@ import Kanna
 public protocol UCSCourseDelegate: class {
     var session: UCSSession { get }
     func foundFile(course: UCSCourse, file: UCSFile)
+    func foundMainFiles(course: UCSCourse, files: [UCSFile])
+    func foundFolderFiles(course: UCSCourse, folder: UCSFile, files: [UCSFile])
 }
 
 public class UCSCourse {
@@ -28,6 +30,8 @@ public class UCSCourse {
     
     private var _files: [UCSFile] = []
     public var files: [UCSFile] { return _files }
+    private var _mainFiles: [UCSFile] = []
+    public var mainFiles: [UCSFile] { return _mainFiles }
     
     public weak var delegate: UCSCourseDelegate?
     
@@ -43,43 +47,62 @@ public class UCSCourse {
     
     // MARK: - Functions
     
+    /// Loads **all** files belonging to this course and calls `foundFile(_)` for **each** file
     public func loadFiles() {
-        loadFolders()
+        loadFolders(loadContents: true)
     }
     
-    private func loadFolders() {
+    /// Loads the files in the **main page** of the course. Calls `foundMainFiles(_)` when done
+    public func loadMainFiles() {
+        loadFolders(loadContents: false)
+    }
+    
+    /// Loads the files in the provided folder.
+    /// Calls `foundFolderFiles(_)` when done. Doesn't do anything if provided `UCSFile` isn't a folder (`isFolder()`)
+    public func loadFolderFiles(folder: UCSFile) {
+        guard folder.isFolder() else { return }
+        loadFolderFiles(folder, loadContents: false)
+    }
+    
+    private func loadFolders(loadContents loadContents: Bool) {
         guard let headers = headers() else { return }
         UCSUtils.getDataLink(self.url, headers: headers, filter: UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
+            var files: [UCSFile] = []
             elements.forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
-                let file = UCSFile(course: self, filename: name, path: self.pathForChildren(), url: url)
-                self.foundFolder(file)
+                let file = UCSFile(course: self, filename: name, path: self.pathForChildren(), url: url, idSidingFolder: self.idSidingFolder(href))
+                files.append(file)
+                self.foundFolder(file, loadContents: loadContents)
             })
+            self.delegate?.foundMainFiles(self, files: files)
         }
     }
     
-    private func foundFolder(folder: UCSFile) {
+    private func foundFolder(folder: UCSFile, loadContents: Bool) {
         UCSQueue.serial({
             guard self.isFileNew(folder) else { return }
-            self._files.append(folder)
-            self.loadFolderFiles(folder)
-            self.delegate?.foundFile(self, file: folder)
+            self.foundNewFile(folder)
+            if loadContents {
+                self.loadFolderFiles(folder, loadContents: loadContents)
+            }
         })
     }
     
-    private func loadFolderFiles(folder: UCSFile) {
+    private func loadFolderFiles(folder: UCSFile, loadContents: Bool) {
         guard let headers = headers() else { return }
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
             folder.justChecked()
+            var files: [UCSFile] = []
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
                 // TODO: Get Siding ID
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
-                let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url)
-                self.foundFolder(file)
+                let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFolder: self.idSidingFolder(href))
+                files.append(file)
+                self.foundFolder(file, loadContents: loadContents)
             })
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
                 // TODO: Get Siding ID
@@ -87,24 +110,44 @@ public class UCSCourse {
                 let name = text
                 let hrefDuplicate = "/siding/dirdes/ingcursos/cursos/"
                 let url = UCSURL.courseMainURL + href.stringByReplacingOccurrencesOfString(hrefDuplicate, withString: "")
-                let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url)
+                let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFile: self.idSidingFile(href))
+                files.append(file)
                 self.foundFile(file)
             })
+            self.delegate?.foundFolderFiles(self, folder: folder, files: files)
         }
     }
     
     private func foundFile(newFile: UCSFile) {
         UCSQueue.serial({
             guard self.isFileNew(newFile) else { return }
-            self._files.append(newFile)
+            self.foundNewFile(newFile)
             newFile.justChecked()
-            self.delegate?.foundFile(self, file: newFile)
         })
     }
     
+    private func foundNewFile(newFile: UCSFile) {
+        _files.append(newFile)
+        let parentFolders = _files.filter({ folder in newFile.pathCompleted().containsString(newFile.pathCompleted()) })
+        if parentFolders.count > 0 {
+            parentFolders[0].foundChild(newFile)
+        } else {
+            _mainFiles.append(newFile)
+        }
+        delegate?.foundFile(self, file: newFile)
+    }
+    
     private func isFileNew(newFile: UCSFile) -> Bool {
-        guard !self._files.contains({ file in file.url == newFile.url }) else { return false }
+        guard !_files.contains({ file in file.url == newFile.url }) else { return false }
         return true
+    }
+    
+    private func idSidingFolder(href: String) -> String {
+        return href.componentsSeparatedByString("id_carpeta=")[1].componentsSeparatedByString("&")[0]
+    }
+    
+    private func idSidingFile(href: String) -> String {
+        return href.componentsSeparatedByString("id_archivo=")[1].componentsSeparatedByString("&")[0]
     }
     
     // MARK: - Helpers

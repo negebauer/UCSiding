@@ -27,6 +27,9 @@ public class UCSFile {
     public var idSidingFolder: String?
     public var idSidingFile: String?
     
+    private var _childs: [UCSFile] = []
+    public var childs: [UCSFile] { return _childs }
+    
     // MARK: - Variables
     
     // MARK: - Init
@@ -48,6 +51,11 @@ public class UCSFile {
     
     public func pathCompleted() -> String {
         return "\(path)/\(name)"
+    }
+    
+    public func foundChild(child: UCSFile) {
+        guard !_childs.contains({ file in file.url == child.url }) else { return }
+        _childs.append(child)
     }
     
     // MARK: - Helpers
