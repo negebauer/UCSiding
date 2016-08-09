@@ -61,11 +61,17 @@ public class UCSFile {
     // MARK: - Helpers
     
     public func isFile() -> Bool {
-        return url.containsString("descarga")
+        return url.containsString(UCSConstant.urlIdentifierFile)
     }
     
     public func isFolder() -> Bool {
         return !isFile()
+    }
+    
+    public func fileExtension() -> String {
+        let separated = name.componentsSeparatedByString(".")
+        guard let last = separated.last else { return "NO_EXTENSION" }
+        return last.uppercaseString
     }
     
 }
