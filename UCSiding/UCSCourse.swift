@@ -95,8 +95,8 @@ public class UCSCourse {
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
             folder.justChecked()
             var files: [UCSFile] = []
+            var filesFoundBefore: [UCSFile] = self._files
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
-                // TODO: Get Siding ID
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
@@ -105,7 +105,6 @@ public class UCSCourse {
                 self.foundFolder(file, loadContents: loadContents)
             })
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
-                // TODO: Get Siding ID
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let hrefDuplicate = "/siding/dirdes/ingcursos/cursos/"
@@ -114,6 +113,7 @@ public class UCSCourse {
                 files.append(file)
                 self.foundFile(file)
             })
+            files.filter({ file in !filesFoundBefore.contains({ fileFoundBefore in fileFoundBefore.url == file.url }) })
             self.delegate?.foundFolderFiles(self, folder: folder, files: files)
         }
     }
