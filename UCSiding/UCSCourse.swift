@@ -71,7 +71,6 @@ public class UCSCourse {
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
-                print("Found main folder \(name)")
                 let file = UCSFile(course: self, filename: name, path: self.pathForChildren(), url: url, idSidingFolder: self.idSidingFolder(href))
                 self.foundFolder(file, loadContents: loadContents)
             })
@@ -101,7 +100,6 @@ public class UCSCourse {
                 let url = UCSURL.courseMainURL + href
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFolder: self.idSidingFolder(href))
                 self.foundFolder(file, loadContents: loadContents)
-                print("Found folder file \(name)")
             })
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
@@ -110,7 +108,6 @@ public class UCSCourse {
                 let url = UCSURL.courseMainURL + href.stringByReplacingOccurrencesOfString(hrefDuplicate, withString: "")
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFile: self.idSidingFile(href))
                 self.foundFile(file)
-                print("Found folder folder \(name)")
             })
             UCSQueue.serial({
                 let files = self._files.filter({ $0.isChildOf(folder) })
@@ -130,10 +127,8 @@ public class UCSCourse {
     private func foundNewFile(newFile: UCSFile) {
         let parentFolders = _files.filter({ $0.isParentOf(newFile) })
         if parentFolders.count > 0 {
-            print("Found Child: \(newFile.name) is child of \(parentFolders[0].name)")
             parentFolders[0].foundChild(newFile)
         } else {
-            print("Found Main: \(newFile.name)")
             _mainFiles.append(newFile)
         }
         _files.append(newFile)
