@@ -58,6 +58,15 @@ public class UCSFile {
         _childs.append(child)
     }
     
+    public func isChildOf(folder: UCSFile) -> Bool {
+        return folder.isParentOf(self)
+    }
+    
+    public func isParentOf(file: UCSFile) -> Bool {
+        guard isFolder() else { return false }
+        return pathCompleted() == file.path
+    }
+    
     // MARK: - Helpers
     
     public func isFile() -> Bool {

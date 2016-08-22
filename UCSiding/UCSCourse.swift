@@ -67,16 +67,17 @@ public class UCSCourse {
     private func loadFolders(loadContents loadContents: Bool) {
         guard let headers = headers() else { return }
         UCSUtils.getDataLink(self.url, headers: headers, filter: UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
-            var files: [UCSFile] = []
             elements.forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
+                print("Found main folder \(name)")
                 let file = UCSFile(course: self, filename: name, path: self.pathForChildren(), url: url, idSidingFolder: self.idSidingFolder(href))
-                files.append(file)
                 self.foundFolder(file, loadContents: loadContents)
             })
-            self.delegate?.foundMainFiles(self, files: files)
+            UCSQueue.serial({
+                self.delegate?.foundMainFiles(self, files: self._mainFiles)
+            })
         }
     }
     
@@ -94,15 +95,13 @@ public class UCSCourse {
         guard let headers = headers() else { return }
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
             folder.justChecked()
-            var files: [UCSFile] = []
-            var filesFoundBefore: [UCSFile] = self._files
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFolder: self.idSidingFolder(href))
-                files.append(file)
                 self.foundFolder(file, loadContents: loadContents)
+                print("Found folder file \(name)")
             })
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
@@ -110,11 +109,13 @@ public class UCSCourse {
                 let hrefDuplicate = "/siding/dirdes/ingcursos/cursos/"
                 let url = UCSURL.courseMainURL + href.stringByReplacingOccurrencesOfString(hrefDuplicate, withString: "")
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFile: self.idSidingFile(href))
-                files.append(file)
                 self.foundFile(file)
+                print("Found folder folder \(name)")
             })
-            files.filter({ file in !filesFoundBefore.contains({ fileFoundBefore in fileFoundBefore.url == file.url }) })
-            self.delegate?.foundFolderFiles(self, folder: folder, files: files)
+            UCSQueue.serial({
+                let files = self._files.filter({ $0.isChildOf(folder) })
+                self.delegate?.foundFolderFiles(self, folder: folder, files: files)
+            })
         }
     }
     
@@ -127,13 +128,15 @@ public class UCSCourse {
     }
     
     private func foundNewFile(newFile: UCSFile) {
-        _files.append(newFile)
-        let parentFolders = _files.filter({ folder in newFile.pathCompleted().containsString(newFile.pathCompleted()) })
+        let parentFolders = _files.filter({ $0.isParentOf(newFile) })
         if parentFolders.count > 0 {
+            print("Found Child: \(newFile.name) is child of \(parentFolders[0].name)")
             parentFolders[0].foundChild(newFile)
         } else {
+            print("Found Main: \(newFile.name)")
             _mainFiles.append(newFile)
         }
+        _files.append(newFile)
         delegate?.foundFile(self, file: newFile)
     }
     
