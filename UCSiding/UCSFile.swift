@@ -9,6 +9,11 @@
 import Alamofire
 import Kanna
 
+public protocol UCSFileDelegate {
+    func downloadProgress(progress: Float)
+    func downloadFinished(path: String)
+}
+
 /// A file or folder found in a Siding course
 public class UCSFile {
     
@@ -31,6 +36,8 @@ public class UCSFile {
     public var childs: [UCSFile] { return _childs }
     
     // MARK: - Variables
+    
+    public var delegate: UCSFileDelegate?
     
     // MARK: - Init
     
@@ -67,6 +74,12 @@ public class UCSFile {
         return pathCompleted() == file.path
     }
     
+    public func download(headers: [String: String]?, delegate: UCSFileDelegate?) {
+        guard isFile() else { return }
+        self.delegate = delegate
+        UCSDownloadHandler.shared.downloadFile(url, filePath: pathCompleted(), headers: headers, updateProgress: delegate?.downloadProgress, downloadedFile: delegate?.downloadFinished)
+    }
+    
     // MARK: - Helpers
     
     public func isFile() -> Bool {
@@ -85,6 +98,7 @@ public class UCSFile {
     
 }
 
+// MARK - CustomStringConvertible comply
 extension UCSFile: CustomStringConvertible {
     public var description: String {
         return "(\(isFolder() ? "F" : "f")) \(name)\n\(path)\n\(url)"
