@@ -11,7 +11,7 @@ import Kanna
 
 public protocol UCSFileDelegate {
     func downloadProgress(progress: Float)
-    func downloadFinished(path: String)
+    func downloadFinished(fileURL: NSURL)
 }
 
 /// A file or folder found in a Siding course
@@ -77,7 +77,7 @@ public class UCSFile {
     public func download(headers: [String: String]?, delegate: UCSFileDelegate?) {
         guard isFile() else { return }
         self.delegate = delegate
-        UCSDownloadHandler.shared.downloadFile(url, filePath: pathCompleted(), headers: headers, updateProgress: delegate?.downloadProgress, downloadedFile: delegate?.downloadFinished)
+        UCSDownloadHandler.shared.downloadFile(url, name: name, headers: headers, downloadedFile: delegate?.downloadFinished)
     }
     
     // MARK: - Helpers
