@@ -45,7 +45,61 @@ public class UCSCourse {
         self.section = section
     }
     
-    // MARK: - Functions
+    // MARK: - Course info
+    
+    public func loadStudents(withHeaderRow: Bool = true, success: ((students: [UCSStudent]) -> Void)? = nil, failure: ((error: NSError?) -> Void)? = nil) {
+        guard let headers = headers() else { return }
+        UCSActivityIndicator.shared.startTask()
+        let url = UCSURL.CourseURL(course: self).students()
+        Alamofire.request(.GET, url, headers: headers)
+            .response { (_, response, data, error) in
+                guard let data = data where error == nil else {
+                    failure?(error: error)
+                    return print("Error: \(error!)")
+                }
+                let stringData = UCSUtils.stringFromData(data)
+                if let doc = Kanna.HTML(html: stringData, encoding: NSUTF8StringEncoding) {
+                    let table = doc.xpath("//table[@class='TablaConBordeFinoLightblue']")
+                    var students = [UCSStudent]()
+                    table.forEach({ element in
+                        let row = element.xpath("tr").forEach({
+                            var lastnameP = ""
+                            var lastnameM = ""
+                            var name = ""
+                            var i = 0
+                            func clean(string: String) -> String {
+                                return string.stringByReplacingOccurrencesOfString("\r", withString: "")
+                                    .stringByReplacingOccurrencesOfString("\n", withString: "")
+                                    .stringByReplacingOccurrencesOfString("\t", withString: "")
+                                    .stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
+                                    .capitalizedString
+                            }
+                            let cells = $0.xpath("td").forEach({
+                                guard var text = $0.text else { return }
+                                text = clean(text)
+                                if i == 0 {
+                                    lastnameP = text
+                                } else if i == 1 {
+                                    lastnameM = text
+                                } else if i == 2 {
+                                    name = text
+                                }
+                                i += 1
+                            })
+                            let student = UCSStudent(lastnameP: lastnameP, lastnameM: lastnameM, name: name)
+                            students.append(student)
+                        })
+                    })
+                    if !withHeaderRow {
+                        students.removeFirst()
+                    }
+                    success?(students: students)
+                }
+                
+        }
+    }
+    
+    // MARK: - Course files
     
     /// Loads **all** files belonging to this course and calls `foundFile(_)` for **each** file
     public func loadFiles() {
@@ -66,7 +120,9 @@ public class UCSCourse {
     
     private func loadFolders(loadContents loadContents: Bool) {
         guard let headers = headers() else { return }
+        UCSActivityIndicator.shared.startTask()
         UCSUtils.getDataLink(self.url, headers: headers, filter: UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
+            UCSActivityIndicator.shared.endTask()
             elements.forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
@@ -92,7 +148,9 @@ public class UCSCourse {
     
     private func loadFolderFiles(folder: UCSFile, loadContents: Bool) {
         guard let headers = headers() else { return }
+        UCSActivityIndicator.shared.startTask()
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
+            UCSActivityIndicator.shared.endTask()
             folder.justChecked()
             elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
@@ -139,6 +197,8 @@ public class UCSCourse {
         guard !_files.contains({ file in file.url == newFile.url }) else { return false }
         return true
     }
+    
+    // MARK: - File helpers
     
     private func idSidingFolder(href: String) -> String {
         return href.componentsSeparatedByString("id_carpeta=")[1].componentsSeparatedByString("&")[0]

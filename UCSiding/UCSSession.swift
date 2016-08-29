@@ -43,8 +43,10 @@ public class UCSSession {
             "sh": "",
             "cd": ""
         ]
+        UCSActivityIndicator.shared.startTask()
         loginRequest = Alamofire.request(.POST, UCSURL.loginURL, parameters: params, encoding: .URL)
             .response { request, response, data, error in
+                UCSActivityIndicator.shared.endTask()
                 self.loginRequest = nil
                 guard let data = data, let response = response where error == nil else {
                     failure?(error: error)
@@ -62,7 +64,9 @@ public class UCSSession {
     }
     
     public func logout(callback: (() -> Void)? = nil) {
+        UCSActivityIndicator.shared.startTask()
         logoutRequest = Alamofire.request(.GET, UCSURL.logoutURL).response { _, _, _, _ in
+            UCSActivityIndicator.shared.endTask()
             self.logoutRequest = nil
             callback?()
         }

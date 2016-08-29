@@ -48,12 +48,14 @@ class UCSDownloadHandler {
         request.HTTPMethod = HTTPMethod.GET.rawValue
         request.allHTTPHeaderFields = headers
         let task = session.dataTaskWithRequest(request, completionHandler: { data, response, error in
+            UCSActivityIndicator.shared.endTask()
             self.downloads.removeValueForKey(url)
             guard let data = data where error == nil else { return }
             data.writeToURL(fileURL, atomically: true)
             downloadedFile?(fileURL: fileURL)
         })
         downloads[url] = task
+        UCSActivityIndicator.shared.startTask()
         task.resume()
     }
 
