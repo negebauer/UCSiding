@@ -6,18 +6,25 @@
 //  Copyright © 2016 Nicolás Gebauer. All rights reserved.
 //
 
-import UIKit
+#if os(iOS)
+    import UIKit
+#endif
 
 internal class UCSActivityIndicator {
     
     // MARK: - Constants
     
     static let shared = UCSActivityIndicator()
+    
+    #if os(iOS)
     let application = UIApplication.sharedApplication()
+    #endif
     
     // MARK: - Variables
     
     var taskCount = 0
+    
+    #if os(iOS)
     var networkActivityIndicatorVisible: Bool {
         get {
             return application.networkActivityIndicatorVisible
@@ -25,6 +32,11 @@ internal class UCSActivityIndicator {
             application.networkActivityIndicatorVisible = visible
         }
     }
+    #endif
+    
+    #if !os(iOS)
+    var networkActivityIndicatorVisible = false
+    #endif
     
     // MARK: - Init
     
