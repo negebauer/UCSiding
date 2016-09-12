@@ -8,11 +8,11 @@
 
 internal struct UCSQueue {
     
-    static private let serialQueue = dispatch_queue_create(UCSConstant.bundleId + ".serialQueue", DISPATCH_QUEUE_SERIAL)
+    static fileprivate let serialQueue = DispatchQueue(label: UCSConstant.bundleId + ".serialQueue", attributes: [])
     
     /// A custom background serial queue
-    static internal func serial(block: () -> Void) {
-        dispatch_async(serialQueue, {
+    static internal func serial(_ block: @escaping () -> Void) {
+        serialQueue.async(execute: {
             block()
         })
     }

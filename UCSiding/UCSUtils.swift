@@ -11,8 +11,8 @@ import Kanna
 
 internal struct UCSUtils {
     
-    internal static func stringFromData(data: NSData) -> String {
-        let str = String(data: data, encoding: NSASCIIStringEncoding) ?? ""
+    internal static func stringFromData(_ data: Data) -> String {
+        let str = String(data: data, encoding: String.Encoding.ascii) ?? ""
         return str
     }
     
@@ -21,10 +21,10 @@ internal struct UCSUtils {
      
      - returns: An array of elements that match the provided filters
      */
-    internal static func getDataLink(link: String, headers: [String: String]?, filter: String..., checkData: (elements: [XMLElement]) -> Void) {
+    internal static func getDataLink(_ link: String, headers: [String: String]?, filter: String..., checkData: (_ elements: [XMLElement]) -> Void) {
         Alamofire.request(.GET, link, headers: headers)
             .response { (_, response, data, error) in
-                guard let data = data where error == nil else {
+                guard let data = data, error == nil else {
                     return print("Error: \(error!)")
                 }
                 let stringData = UCSUtils.stringFromData(data)

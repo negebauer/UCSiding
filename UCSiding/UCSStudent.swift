@@ -20,7 +20,7 @@ public struct UCSStudent {
     
     // MARK: - Init
     
-    init(let lastnameP: String, lastnameM: String, name: String) {
+    init(lastnameP: String, lastnameM: String, name: String) {
         self.lastnameP = lastnameP
         self.lastnameM = lastnameM
         self.name = name

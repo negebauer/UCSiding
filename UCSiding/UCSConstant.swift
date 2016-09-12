@@ -9,7 +9,7 @@
 internal struct UCSConstant {
     
     internal static let bundleId: String = {
-        return NSBundle.mainBundle().bundleIdentifier ?? "com.negebauer.ucsiding"
+        return Bundle.main.bundleIdentifier ?? "com.negebauer.ucsiding"
     }()
     
     internal static let urlIdentifierFolder = "vista.phtml"

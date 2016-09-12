@@ -17,7 +17,7 @@ internal class UCSActivityIndicator {
     static let shared = UCSActivityIndicator()
     
     #if os(iOS)
-    let application = UIApplication.sharedApplication()
+    let application = UIApplication.shared
     #endif
     
     // MARK: - Variables
@@ -27,9 +27,9 @@ internal class UCSActivityIndicator {
     #if os(iOS)
     var networkActivityIndicatorVisible: Bool {
         get {
-            return application.networkActivityIndicatorVisible
+            return application.isNetworkActivityIndicatorVisible
         } set (visible) {
-            application.networkActivityIndicatorVisible = visible
+            application.isNetworkActivityIndicatorVisible = visible
         }
     }
     #endif

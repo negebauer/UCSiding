@@ -19,7 +19,7 @@ public struct UCSURL {
     public static let coursesPath = "/dirdes/ingcursos/cursos/index.phtml"
     public static let coursesURL = "\(main)\(coursesPath)"
     
-    public static let courseFilePath = coursesPath.stringByReplacingOccurrencesOfString("index.phtml", withString: "descarga.phtml")
+    public static let courseFilePath = coursesPath.replacingOccurrences(of: "index.phtml", with: "descarga.phtml")
     public static let courseFileURL = "\(main)\(courseFilePath)"
     
     public static let logoutPath =  "/logout.phtml"
@@ -37,11 +37,11 @@ public struct UCSURL {
             self.course = course
         }
         
-        private func url(action: String) -> String {
+        fileprivate func url(_ action: String) -> String {
             return "\(coursesURL)?accion_curso=\(action)&id_curso_ic=\(id)"
         }
         
-        public func fileUrl(file: UCSFile) -> String {
+        public func fileUrl(_ file: UCSFile) -> String {
             if file.isFolder() {
                 return "\(coursesURL)?id_curso_ic=\(id)&accion_curso=carpetas&acc_carp=abrir_carpeta&id_carpeta=\(file.idSidingFolder!)"
                 

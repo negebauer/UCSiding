@@ -10,24 +10,24 @@ import Alamofire
 import Kanna
 
 public protocol UCSidingDelegate: class {
-    func coursesFound(siding: UCSiding, courses: [UCSCourse])
-    func courseFoundFile(siding: UCSiding, courses: [UCSCourse], course: UCSCourse, file: UCSFile)
+    func coursesFound(_ siding: UCSiding, courses: [UCSCourse])
+    func courseFoundFile(_ siding: UCSiding, courses: [UCSCourse], course: UCSCourse, file: UCSFile)
 }
 
 /// Interact with a session corresponding siding's
-public class UCSiding: UCSCourseDelegate {
+open class UCSiding: UCSCourseDelegate {
     
     // MARK: - Constants
     
     // MARK: - Variables
     
-    private var _session: UCSSession
-    public var session: UCSSession { return _session }
+    fileprivate var _session: UCSSession
+    open var session: UCSSession { return _session }
     
-    private var _courses: [UCSCourse] = []
-    public var courses: [UCSCourse] { return _courses }
+    fileprivate var _courses: [UCSCourse] = []
+    open var courses: [UCSCourse] { return _courses }
     
-    public weak var delegate: UCSidingDelegate?
+    open weak var delegate: UCSidingDelegate?
     
     // MARK: - Init
     
@@ -39,14 +39,14 @@ public class UCSiding: UCSCourseDelegate {
     // MARK: - Courses scrapping
     
     /// Scraps the Siding to obtain the list of current courses for the current session
-    public func loadCourses() {
+    open func loadCourses() {
         clearCourses()
         UCSUtils.getDataLink(UCSURL.coursesURL, headers: session.headers(), filter: "id_curso") { (elements: [XMLElement]) in
             elements.forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let split = text.stringByReplacingOccurrencesOfString("s.", withString: "").componentsSeparatedByString(" ")
                 let splitIdSiding = href.componentsSeparatedByString("id_curso_ic=")
-                guard let section = Int(split[1]) where split.count >= 3 && splitIdSiding.count >= 2 else { return }
+                guard let section = Int(split[1]) , split.count >= 3 && splitIdSiding.count >= 2 else { return }
                 let id = split[0]
                 let idSiding = splitIdSiding[1]
                 let name = split[2...(split.count - 1)].joinWithSeparator(" ")
@@ -59,13 +59,13 @@ public class UCSiding: UCSCourseDelegate {
     }
     
     /// Adds the provided `course` if it wasn't registered before
-    private func foundCourse(course: UCSCourse) {
+    fileprivate func foundCourse(_ course: UCSCourse) {
         guard getCourse(id: course.id) == nil else { return }
         _courses.append(course)
     }
     
     /// Clears the current loaded courses
-    public func clearCourses() {
+    open func clearCourses() {
         _courses = []
     }
     
@@ -76,7 +76,7 @@ public class UCSiding: UCSCourseDelegate {
     
      `UCSCourses` sets itself as the delegate of each course to notify on each file discovery
      */
-    public func loadCoursesFiles() {
+    open func loadCoursesFiles() {
         courses.forEach({ course in
             course.delegate = self
             course.loadFiles()
@@ -85,34 +85,34 @@ public class UCSiding: UCSCourseDelegate {
     
     // MARK: - UCSCourseDelegate methods
     
-    public func foundFile(course: UCSCourse, file: UCSFile) {
+    open func foundFile(_ course: UCSCourse, file: UCSFile) {
         delegate?.courseFoundFile(self, courses: courses, course: course, file: file)
     }
     
-    public func foundMainFiles(course: UCSCourse, files: [UCSFile]) {
+    open func foundMainFiles(_ course: UCSCourse, files: [UCSFile]) {
         print("Error: This call hasn't been implemented (UCSSiding.foundMainFiles)")
     }
     
-    public func foundFolderFiles(course: UCSCourse, folder: UCSFile, files: [UCSFile]) {
+    open func foundFolderFiles(_ course: UCSCourse, folder: UCSFile, files: [UCSFile]) {
         print("Error: This call hasn't been implemented (UCSSiding.foundFolderFiles)")
     }
     
     // MARK: - Courses get
     
     /// Gets a course by it's id, such as `IIC2233`
-    public func getCourse(id id: String) -> UCSCourse? {
+    open func getCourse(id: String) -> UCSCourse? {
         let filter: (UCSCourse) -> Bool = { course in course.id == id }
         return getCourse(filter)
     }
     
     /// Gets a course by it's name, such as `Programación Avanzada`
-    public func getCourse(name name: String) -> UCSCourse? {
+    open func getCourse(name: String) -> UCSCourse? {
         let filter: (UCSCourse) -> Bool = { course in course.name == name }
         return getCourse(filter)
     }
     
-    private func getCourse(filter: (UCSCourse) -> Bool) -> UCSCourse? {
-        guard courses.contains(filter) else {
+    fileprivate func getCourse(_ filter: (UCSCourse) -> Bool) -> UCSCourse? {
+        guard courses.contains(where: filter) else {
             return nil
         }
         return courses.filter(filter)[0]    }
@@ -121,36 +121,36 @@ public class UCSiding: UCSCourseDelegate {
      Gets a course by it's index in the `courses` array.
      To be used, for example, when displaying courses in a table.
      */
-    public func getCourse(index: Int) -> UCSCourse? {
+    open func getCourse(_ index: Int) -> UCSCourse? {
         guard coursesCount() > index else {
             return nil
         }
         return courses[index]
     }
     
-    public func coursesCount() -> Int {
+    open func coursesCount() -> Int {
         return courses.count
     }
     
     // MARK: - Helpers
     
-    public func files() -> [UCSFile] {
-        return Array(courses.map({ $0.files }).flatten())
+    open func files() -> [UCSFile] {
+        return Array(courses.map({ $0.files }).joined())
     }
     
-    public func numberOfFiles() -> Int {
-        return coursesCount() + courses.map({ $0.files.count }).reduce(0, combine: +)
+    open func numberOfFiles() -> Int {
+        return coursesCount() + courses.map({ $0.files.count }).reduce(0, +)
     }
     
-    public func numberOfCheckedFiles() -> Int {
-        return courses.count + courses.map({ $0.files.filter({ $0.isChecked }).count }).reduce(0, combine: +)
+    open func numberOfCheckedFiles() -> Int {
+        return courses.count + courses.map({ $0.files.filter({ $0.isChecked }).count }).reduce(0, +)
     }
     
     /**
      Updates the current session. You should update the courses data after calling this method
      - parameter session:     A valid `UCSSession`
      */
-    public func updateSession(session: UCSSession) {
+    open func updateSession(_ session: UCSSession) {
         _session = session
         clearCourses()
     }

@@ -10,21 +10,21 @@ import Alamofire
 import Kanna
 
 /// UCSiding Session
-public class UCSSession {
+open class UCSSession {
     
     // MARK: - Constants
 
-    private let username: String
-    private let password: String
+    fileprivate let username: String
+    fileprivate let password: String
     
-    private let loginFailString = "Los espacios que vienen a continuación son para lograr que esta celda ocupe la mayor cantidad de espacio posible dentro de la tabla."
+    fileprivate let loginFailString = "Los espacios que vienen a continuación son para lograr que esta celda ocupe la mayor cantidad de espacio posible dentro de la tabla."
     
     // MARK: - Variables
     
-    private var cookies: [NSHTTPCookie] = []
+    fileprivate var cookies: [HTTPCookie] = []
     
-    private var loginRequest: Request?
-    private var logoutRequest: Request?
+    fileprivate var loginRequest: Request?
+    fileprivate var logoutRequest: Request?
     
     // MARK: - Init
     
@@ -35,7 +35,7 @@ public class UCSSession {
     
     // MARK: - Login & Logout
     
-    public func login(success: (() -> Void)? = nil, failure: ((error: NSError?) -> Void)? = nil) {
+    open func login(_ success: (() -> Void)? = nil, failure: ((_ error: NSError?) -> Void)? = nil) {
         let params: [String: String] = [
             "login": username,
             "passwd": password,
@@ -48,7 +48,7 @@ public class UCSSession {
             .response { request, response, data, error in
                 UCSActivityIndicator.shared.endTask()
                 self.loginRequest = nil
-                guard let data = data, let response = response where error == nil else {
+                guard let data = data, let response = response, error == nil else {
                     failure?(error: error)
                     return
                 }
@@ -63,7 +63,7 @@ public class UCSSession {
         }
     }
     
-    public func logout(callback: (() -> Void)? = nil) {
+    open func logout(_ callback: (() -> Void)? = nil) {
         UCSActivityIndicator.shared.startTask()
         logoutRequest = Alamofire.request(.GET, UCSURL.logoutURL).response { _, _, _, _ in
             UCSActivityIndicator.shared.endTask()
@@ -72,17 +72,17 @@ public class UCSSession {
         }
     }
     
-    public func cancelLogin() {
+    open func cancelLogin() {
         loginRequest?.cancel()
     }
     
-    public func cancelLogout() {
+    open func cancelLogout() {
         logoutRequest?.cancel()
     }
     
     // MARK: - Helpers
     
-    public func headers() -> [String: String] {
-        return NSHTTPCookie.requestHeaderFieldsWithCookies(cookies)
+    open func headers() -> [String: String] {
+        return HTTPCookie.requestHeaderFields(with: cookies)
     }
 }

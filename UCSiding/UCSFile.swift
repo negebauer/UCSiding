@@ -10,34 +10,34 @@ import Alamofire
 import Kanna
 
 public protocol UCSFileDelegate {
-    func downloadProgress(progress: Float)
-    func downloadFinished(fileURL: NSURL)
+    func downloadProgress(_ progress: Float)
+    func downloadFinished(_ fileURL: URL)
 }
 
 /// A file or folder found in a Siding course
-public class UCSFile {
+open class UCSFile {
     
     // MARK: - Constants
     
-    private let _course: UCSCourse
-    public lazy var course: UCSCourse = { return self._course }()
+    fileprivate let _course: UCSCourse
+    open lazy var course: UCSCourse = { return self._course }()
     /// The path of the folder that contains this file
-    public let path: String
-    public let name: String
-    public let url: String
+    open let path: String
+    open let name: String
+    open let url: String
     
-    private var checked = false
-    public var isChecked: Bool { return checked }
+    fileprivate var checked = false
+    open var isChecked: Bool { return checked }
     
-    public var idSidingFolder: String?
-    public var idSidingFile: String?
+    open var idSidingFolder: String?
+    open var idSidingFile: String?
     
-    private var _childs: [UCSFile] = []
-    public var childs: [UCSFile] { return _childs }
+    fileprivate var _childs: [UCSFile] = []
+    open var childs: [UCSFile] { return _childs }
     
     // MARK: - Variables
     
-    public var delegate: UCSFileDelegate?
+    open var delegate: UCSFileDelegate?
     
     // MARK: - Init
     
@@ -52,29 +52,29 @@ public class UCSFile {
     
     // MARK: - Functions
     
-    public func justChecked() {
+    open func justChecked() {
         checked = true
     }
     
-    public func pathCompleted() -> String {
+    open func pathCompleted() -> String {
         return "\(path)/\(name)"
     }
     
-    public func foundChild(child: UCSFile) {
-        guard !_childs.contains({ file in file.url == child.url }) else { return }
+    open func foundChild(_ child: UCSFile) {
+        guard !_childs.contains(where: { file in file.url == child.url }) else { return }
         _childs.append(child)
     }
     
-    public func isChildOf(folder: UCSFile) -> Bool {
+    open func isChildOf(_ folder: UCSFile) -> Bool {
         return folder.isParentOf(self)
     }
     
-    public func isParentOf(file: UCSFile) -> Bool {
+    open func isParentOf(_ file: UCSFile) -> Bool {
         guard isFolder() else { return false }
         return pathCompleted() == file.path
     }
     
-    public func download(headers: [String: String]?, delegate: UCSFileDelegate?) {
+    open func download(_ headers: [String: String]?, delegate: UCSFileDelegate?) {
         guard isFile() else { return }
         self.delegate = delegate
         UCSDownloadHandler.shared.downloadFile(url, name: name, headers: headers, downloadedFile: delegate?.downloadFinished)
@@ -82,18 +82,18 @@ public class UCSFile {
     
     // MARK: - Helpers
     
-    public func isFile() -> Bool {
-        return url.containsString(UCSConstant.urlIdentifierFile)
+    open func isFile() -> Bool {
+        return url.contains(UCSConstant.urlIdentifierFile)
     }
     
-    public func isFolder() -> Bool {
+    open func isFolder() -> Bool {
         return !isFile()
     }
     
-    public func fileExtension() -> String {
-        let separated = name.componentsSeparatedByString(".")
+    open func fileExtension() -> String {
+        let separated = name.components(separatedBy: ".")
         guard let last = separated.last else { return "NO_EXTENSION" }
-        return last.uppercaseString
+        return last.uppercased()
     }
     
 }

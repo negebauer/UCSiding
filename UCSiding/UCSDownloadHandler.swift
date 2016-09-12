@@ -13,20 +13,20 @@ enum HTTPMethod: String {
     case GET, POST
 }
 
-typealias downloadedFileCallback = (fileURL: NSURL) -> Void
+typealias downloadedFileCallback = (_ fileURL: URL) -> Void
 
 class UCSDownloadHandler {
     
     // MARK: - Constants
 
     static let shared = UCSDownloadHandler()
-    let session = NSURLSession.sharedSession()
+    let session = URLSession.shared
     
     // MARK: - Variables
     
-    var downloads: [String: NSURLSessionTask] = [:]
-    lazy var fileManager = { NSFileManager.defaultManager() }()
-    lazy var documents = { NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! } ()
+    var downloads: [String: URLSessionTask] = [:]
+    lazy var fileManager = { FileManager.default }()
+    lazy var documents = { NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! } ()
     
     // MARK: - Init
     
@@ -36,22 +36,22 @@ class UCSDownloadHandler {
     
     // MARK: - Functions
     
-    func downloadFile(url: String, name: String, headers: [String: String]?, downloadedFile: downloadedFileCallback?) {
-        let filePath = documents.stringByAppendingString("/\(name)")
-        let fileURL = NSURL(fileURLWithPath: filePath)
-        guard !fileManager.fileExistsAtPath(filePath) else {
-            downloadedFile?(fileURL: fileURL)
+    func downloadFile(_ url: String, name: String, headers: [String: String]?, downloadedFile: downloadedFileCallback?) {
+        let filePath = documents + "/\(name)"
+        let fileURL = URL(fileURLWithPath: filePath)
+        guard !fileManager.fileExists(atPath: filePath) else {
+            downloadedFile?(fileURL)
             return
         }
-        guard let downloadURL = NSURL(string: url) where downloads[url] == nil else { return }
-        let request = NSMutableURLRequest(URL: downloadURL)
-        request.HTTPMethod = HTTPMethod.GET.rawValue
+        guard let downloadURL = URL(string: url) , downloads[url] == nil else { return }
+        let request = NSMutableURLRequest(url: downloadURL)
+        request.httpMethod = HTTPMethod.GET.rawValue
         request.allHTTPHeaderFields = headers
-        let task = session.dataTaskWithRequest(request, completionHandler: { data, response, error in
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
             UCSActivityIndicator.shared.endTask()
-            self.downloads.removeValueForKey(url)
-            guard let data = data where error == nil else { return }
-            data.writeToURL(fileURL, atomically: true)
+            self.downloads.removeValue(forKey: url)
+            guard let data = data , error == nil else { return }
+            try? data.write(to: fileURL, options: [.atomic])
             downloadedFile?(fileURL: fileURL)
         })
         downloads[url] = task

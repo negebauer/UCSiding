@@ -11,29 +11,29 @@ import Kanna
 
 public protocol UCSCourseDelegate: class {
     var session: UCSSession { get }
-    func foundFile(course: UCSCourse, file: UCSFile)
-    func foundMainFiles(course: UCSCourse, files: [UCSFile])
-    func foundFolderFiles(course: UCSCourse, folder: UCSFile, files: [UCSFile])
+    func foundFile(_ course: UCSCourse, file: UCSFile)
+    func foundMainFiles(_ course: UCSCourse, files: [UCSFile])
+    func foundFolderFiles(_ course: UCSCourse, folder: UCSFile, files: [UCSFile])
 }
 
-public class UCSCourse {
+open class UCSCourse {
     
     // MARK: - Constants
 
     // MARK: - Variables
     
-    public var id: String
-    public var idSiding: String
-    public var name: String
-    public var url: String
-    public var section: Int
+    open var id: String
+    open var idSiding: String
+    open var name: String
+    open var url: String
+    open var section: Int
     
-    private var _files: [UCSFile] = []
-    public var files: [UCSFile] { return _files }
-    private var _mainFiles: [UCSFile] = []
-    public var mainFiles: [UCSFile] { return _mainFiles }
+    fileprivate var _files: [UCSFile] = []
+    open var files: [UCSFile] { return _files }
+    fileprivate var _mainFiles: [UCSFile] = []
+    open var mainFiles: [UCSFile] { return _mainFiles }
     
-    public weak var delegate: UCSCourseDelegate?
+    open weak var delegate: UCSCourseDelegate?
     
     // MARK: - Init
     
@@ -47,13 +47,13 @@ public class UCSCourse {
     
     // MARK: - Course info
     
-    public func loadStudents(withHeaderRow: Bool = true, success: ((students: [UCSStudent]) -> Void)? = nil, failure: ((error: NSError?) -> Void)? = nil) {
+    open func loadStudents(_ withHeaderRow: Bool = true, success: ((_ students: [UCSStudent]) -> Void)? = nil, failure: ((_ error: NSError?) -> Void)? = nil) {
         guard let headers = headers() else { return }
         UCSActivityIndicator.shared.startTask()
         let url = UCSURL.CourseURL(course: self).students()
         Alamofire.request(.GET, url, headers: headers)
             .response { (_, response, data, error) in
-                guard let data = data where error == nil else {
+                guard let data = data , error == nil else {
                     failure?(error: error)
                     return print("Error: \(error!)")
                 }
@@ -67,7 +67,7 @@ public class UCSCourse {
                             var lastnameM = ""
                             var name = ""
                             var i = 0
-                            func clean(string: String) -> String {
+                            func clean(_ string: String) -> String {
                                 return string.stringByReplacingOccurrencesOfString("\r", withString: "")
                                     .stringByReplacingOccurrencesOfString("\n", withString: "")
                                     .stringByReplacingOccurrencesOfString("\t", withString: "")
@@ -102,23 +102,23 @@ public class UCSCourse {
     // MARK: - Course files
     
     /// Loads **all** files belonging to this course and calls `foundFile(_)` for **each** file
-    public func loadFiles() {
+    open func loadFiles() {
         loadFolders(loadContents: true)
     }
     
     /// Loads the files in the **main page** of the course. Calls `foundMainFiles(_)` when done
-    public func loadMainFiles() {
+    open func loadMainFiles() {
         loadFolders(loadContents: false)
     }
     
     /// Loads the files in the provided folder.
     /// Calls `foundFolderFiles(_)` when done. Doesn't do anything if provided `UCSFile` isn't a folder (`isFolder()`)
-    public func loadFolderFiles(folder: UCSFile) {
+    open func loadFolderFiles(_ folder: UCSFile) {
         guard folder.isFolder() else { return }
         loadFolderFiles(folder, loadContents: false)
     }
     
-    private func loadFolders(loadContents loadContents: Bool) {
+    fileprivate func loadFolders(loadContents: Bool) {
         guard let headers = headers() else { return }
         UCSActivityIndicator.shared.startTask()
         UCSUtils.getDataLink(self.url, headers: headers, filter: UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
@@ -136,7 +136,7 @@ public class UCSCourse {
         }
     }
     
-    private func foundFolder(folder: UCSFile, loadContents: Bool) {
+    fileprivate func foundFolder(_ folder: UCSFile, loadContents: Bool) {
         UCSQueue.serial({
             guard self.isFileNew(folder) else { return }
             self.foundNewFile(folder)
@@ -146,7 +146,7 @@ public class UCSCourse {
         })
     }
     
-    private func loadFolderFiles(folder: UCSFile, loadContents: Bool) {
+    fileprivate func loadFolderFiles(_ folder: UCSFile, loadContents: Bool) {
         guard let headers = headers() else { return }
         UCSActivityIndicator.shared.startTask()
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
@@ -174,7 +174,7 @@ public class UCSCourse {
         }
     }
     
-    private func foundFile(newFile: UCSFile) {
+    fileprivate func foundFile(_ newFile: UCSFile) {
         UCSQueue.serial({
             guard self.isFileNew(newFile) else { return }
             self.foundNewFile(newFile)
@@ -182,7 +182,7 @@ public class UCSCourse {
         })
     }
     
-    private func foundNewFile(newFile: UCSFile) {
+    fileprivate func foundNewFile(_ newFile: UCSFile) {
         let parentFolders = _files.filter({ $0.isParentOf(newFile) })
         if parentFolders.count > 0 {
             parentFolders[0].foundChild(newFile)
@@ -193,32 +193,32 @@ public class UCSCourse {
         delegate?.foundFile(self, file: newFile)
     }
     
-    private func isFileNew(newFile: UCSFile) -> Bool {
-        guard !_files.contains({ file in file.url == newFile.url }) else { return false }
+    fileprivate func isFileNew(_ newFile: UCSFile) -> Bool {
+        guard !_files.contains(where: { file in file.url == newFile.url }) else { return false }
         return true
     }
     
     // MARK: - File helpers
     
-    private func idSidingFolder(href: String) -> String {
-        return href.componentsSeparatedByString("id_carpeta=")[1].componentsSeparatedByString("&")[0]
+    fileprivate func idSidingFolder(_ href: String) -> String {
+        return href.components(separatedBy: "id_carpeta=")[1].components(separatedBy: "&")[0]
     }
     
-    private func idSidingFile(href: String) -> String {
-        return href.componentsSeparatedByString("id_archivo=")[1].componentsSeparatedByString("&")[0]
+    fileprivate func idSidingFile(_ href: String) -> String {
+        return href.components(separatedBy: "id_archivo=")[1].components(separatedBy: "&")[0]
     }
     
     // MARK: - Helpers
     
-    public func pathForChildren() -> String {
+    open func pathForChildren() -> String {
         return "\(id) \(name)"
     }
     
-    private func headers() -> [String: String]? {
+    fileprivate func headers() -> [String: String]? {
         return delegate?.session.headers()
     }
     
-    public func numberOfFiles() -> (total: Int, files: Int, folders: Int) {
+    open func numberOfFiles() -> (total: Int, files: Int, folders: Int) {
         let filesC = files.filter({ $0.isFile() }).count
         let folders = files.filter({ $0.isFolder() }).count
         let total = filesC + folders + 1
