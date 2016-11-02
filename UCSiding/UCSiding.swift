@@ -44,12 +44,12 @@ open class UCSiding: UCSCourseDelegate {
         UCSUtils.getDataLink(UCSURL.coursesURL, headers: session.headers(), filter: "id_curso") { (elements: [XMLElement]) in
             elements.forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
-                let split = text.stringByReplacingOccurrencesOfString("s.", withString: "").componentsSeparatedByString(" ")
-                let splitIdSiding = href.componentsSeparatedByString("id_curso_ic=")
+                let split = text.replacingOccurrences(of: "s.", with: "").components(separatedBy: " ")
+                let splitIdSiding = href.components(separatedBy: "id_curso_ic")
                 guard let section = Int(split[1]) , split.count >= 3 && splitIdSiding.count >= 2 else { return }
                 let id = split[0]
                 let idSiding = splitIdSiding[1]
-                let name = split[2...(split.count - 1)].joinWithSeparator(" ")
+                let name = split[2...(split.count - 1)].joined(separator: " ")
                 let url = UCSURL.courseMainURL + href
                 let course = UCSCourse(id: id, idSiding: idSiding, name: name, url: url, section: section)
                 self.foundCourse(course)

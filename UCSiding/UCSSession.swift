@@ -35,8 +35,8 @@ open class UCSSession {
     
     // MARK: - Login & Logout
     
-    open func login(_ success: (() -> Void)? = nil, failure: ((_ error: NSError?) -> Void)? = nil) {
-        let params: [String: String] = [
+    open func login(_ success: (() -> Void)? = nil, failure: ((_ error: Error?) -> Void)? = nil) {
+        let params: [String: Any]? = [
             "login": username,
             "passwd": password,
             "sw": "",
@@ -44,28 +44,29 @@ open class UCSSession {
             "cd": ""
         ]
         UCSActivityIndicator.shared.startTask()
-        loginRequest = Alamofire.request(.POST, UCSURL.loginURL, parameters: params, encoding: .URL)
-            .response { request, response, data, error in
+        Alamofire.request("https://httpbin.org/delete", method: .delete)
+        loginRequest = Alamofire.request(UCSURL.loginURL, method: .post, parameters: params)
+            .response { response in
                 UCSActivityIndicator.shared.endTask()
                 self.loginRequest = nil
-                guard let data = data, let response = response, error == nil else {
-                    failure?(error: error)
+                guard let data = response.data, response.error == nil else {
+                    failure?(response.error)
                     return
                 }
                 let html = UCSUtils.stringFromData(data)
-                guard !html.containsString(self.loginFailString) else {
-                    failure?(error: nil)
+                guard !html.contains(self.loginFailString) else {
+                    failure?(nil)
                     return
                 }
-                let cookies = NSHTTPCookie.cookiesWithResponseHeaderFields(response.allHeaderFields as! [String: String], forURL: NSURL(string: UCSURL.domain)!)
-                self.cookies.appendContentsOf(cookies)
+                let cookies = HTTPCookie.cookies(withResponseHeaderFields: response.response?.allHeaderFields as! [String: String], for: URL(string: UCSURL.domain)!)
+                self.cookies.append(contentsOf: cookies)
                 success?()
         }
     }
     
     open func logout(_ callback: (() -> Void)? = nil) {
         UCSActivityIndicator.shared.startTask()
-        logoutRequest = Alamofire.request(.GET, UCSURL.logoutURL).response { _, _, _, _ in
+        logoutRequest = Alamofire.request(UCSURL.logoutURL).response { response in
             UCSActivityIndicator.shared.endTask()
             self.logoutRequest = nil
             callback?()

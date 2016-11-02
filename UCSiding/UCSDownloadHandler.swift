@@ -44,19 +44,21 @@ class UCSDownloadHandler {
             return
         }
         guard let downloadURL = URL(string: url) , downloads[url] == nil else { return }
-        let request = NSMutableURLRequest(url: downloadURL)
-        request.httpMethod = HTTPMethod.GET.rawValue
-        request.allHTTPHeaderFields = headers
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            UCSActivityIndicator.shared.endTask()
-            self.downloads.removeValue(forKey: url)
-            guard let data = data , error == nil else { return }
-            try? data.write(to: fileURL, options: [.atomic])
-            downloadedFile?(fileURL: fileURL)
-        })
-        downloads[url] = task
-        UCSActivityIndicator.shared.startTask()
-        task.resume()
+        do {
+            let request = try URLRequest(url: downloadURL, method: .get, headers: headers)
+            let task = session.dataTask(with: request, completionHandler: { data, response, error in
+                UCSActivityIndicator.shared.endTask()
+                self.downloads.removeValue(forKey: url)
+                guard let data = data , error == nil else { return }
+                try? data.write(to: fileURL, options: [.atomic])
+                downloadedFile?(fileURL)
+            })
+            downloads[url] = task
+            UCSActivityIndicator.shared.startTask()
+            task.resume()
+        } catch {
+            
+        }
     }
-
+    
 }

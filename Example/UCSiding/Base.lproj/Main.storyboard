@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A239m" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,10 +15,52 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2wB-eR-9cy">
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NLI-2C-Ues">
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4f-U8-fn3">
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="login:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="sud-hr-hDj"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Haz login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSb-2T-lIx">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="NLI-2C-Ues" secondAttribute="trailing" constant="8" id="3kQ-8O-a6K"/>
+                            <constraint firstItem="NLI-2C-Ues" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="E89-Jd-lsG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2wB-eR-9cy" secondAttribute="trailing" constant="8" id="HQh-CA-RJk"/>
+                            <constraint firstItem="NLI-2C-Ues" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="8" id="IEp-dK-tvt"/>
+                            <constraint firstItem="OSb-2T-lIx" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="LRt-uW-SjL"/>
+                            <constraint firstItem="2wB-eR-9cy" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="8" id="PYU-AF-2fr"/>
+                            <constraint firstItem="OSb-2T-lIx" firstAttribute="top" secondItem="e4f-U8-fn3" secondAttribute="bottom" constant="8" id="QPz-6l-pqG"/>
+                            <constraint firstItem="NLI-2C-Ues" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="ZZX-Uh-att"/>
+                            <constraint firstItem="e4f-U8-fn3" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="f9f-t2-VN9"/>
+                            <constraint firstItem="e4f-U8-fn3" firstAttribute="top" secondItem="NLI-2C-Ues" secondAttribute="bottom" constant="8" id="gdr-6y-T8P"/>
+                            <constraint firstItem="2wB-eR-9cy" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="gxH-k8-qTd"/>
+                            <constraint firstItem="NLI-2C-Ues" firstAttribute="top" secondItem="2wB-eR-9cy" secondAttribute="bottom" constant="8" id="sqA-1D-Hcg"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="pass" destination="NLI-2C-Ues" id="MJV-88-FFo"/>
+                        <outlet property="text" destination="OSb-2T-lIx" id="SlY-xF-IIW"/>
+                        <outlet property="user" destination="2wB-eR-9cy" id="EgS-Qw-zjb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

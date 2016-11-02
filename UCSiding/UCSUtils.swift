@@ -21,19 +21,20 @@ internal struct UCSUtils {
      
      - returns: An array of elements that match the provided filters
      */
-    internal static func getDataLink(_ link: String, headers: [String: String]?, filter: String..., checkData: (_ elements: [XMLElement]) -> Void) {
-        Alamofire.request(.GET, link, headers: headers)
-            .response { (_, response, data, error) in
-                guard let data = data, error == nil else {
-                    return print("Error: \(error!)")
+    internal static func getDataLink(_ link: String, headers: [String: String]?, filter: String..., checkData: @escaping (_ elements: [XMLElement]) -> Void) {
+        Alamofire.request(link, headers: headers)
+            .response { response in
+                guard let data = response.data, response.error == nil else {
+                    return print("Error: \(response.error!)")
                 }
                 let stringData = UCSUtils.stringFromData(data)
-                if let doc = Kanna.HTML(html: stringData, encoding: NSUTF8StringEncoding) {
+                if let doc = Kanna.HTML(html: stringData, encoding: String.Encoding.utf8) {
                     let elements = doc.xpath("//a | //link").filter({
                         guard let href = $0["href"] else { return false }
-                        return filter.contains({ href.containsString($0) })
+                        "a".contains("a")
+                        return filter.contains(where: {href.contains($0)})
                     })
-                    checkData(elements: elements)
+                    checkData(elements)
                 }
         }
     }

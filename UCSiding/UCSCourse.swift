@@ -47,18 +47,18 @@ open class UCSCourse {
     
     // MARK: - Course info
     
-    open func loadStudents(_ withHeaderRow: Bool = true, success: ((_ students: [UCSStudent]) -> Void)? = nil, failure: ((_ error: NSError?) -> Void)? = nil) {
+    open func loadStudents(_ withHeaderRow: Bool = true, success: ((_ students: [UCSStudent]) -> Void)? = nil, failure: ((_ error: Error?) -> Void)? = nil) {
         guard let headers = headers() else { return }
         UCSActivityIndicator.shared.startTask()
         let url = UCSURL.CourseURL(course: self).students()
-        Alamofire.request(.GET, url, headers: headers)
-            .response { (_, response, data, error) in
-                guard let data = data , error == nil else {
-                    failure?(error: error)
-                    return print("Error: \(error!)")
+        Alamofire.request(url, headers: headers)
+            .response { response in
+                guard let data = response.data , response.error == nil else {
+                    failure?(response.error)
+                    return print("Error: \(response.error!)")
                 }
                 let stringData = UCSUtils.stringFromData(data)
-                if let doc = Kanna.HTML(html: stringData, encoding: NSUTF8StringEncoding) {
+                if let doc = Kanna.HTML(html: stringData, encoding: String.Encoding.utf8) {
                     let table = doc.xpath("//table[@class='TablaConBordeFinoLightblue']")
                     var students = [UCSStudent]()
                     table.forEach({ element in
@@ -68,11 +68,11 @@ open class UCSCourse {
                             var name = ""
                             var i = 0
                             func clean(_ string: String) -> String {
-                                return string.stringByReplacingOccurrencesOfString("\r", withString: "")
-                                    .stringByReplacingOccurrencesOfString("\n", withString: "")
-                                    .stringByReplacingOccurrencesOfString("\t", withString: "")
-                                    .stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
-                                    .capitalizedString
+                                return string.replacingOccurrences(of: "\r", with: "")
+                                    .replacingOccurrences(of: "\n", with: "")
+                                    .replacingOccurrences(of: "\t", with: "")
+                                    .trimmingCharacters(in: CharacterSet(charactersIn: " "))
+                                    .capitalized
                             }
                             let cells = $0.xpath("td").forEach({
                                 guard var text = $0.text else { return }
@@ -93,7 +93,7 @@ open class UCSCourse {
                     if !withHeaderRow {
                         students.removeFirst()
                     }
-                    success?(students: students)
+                    success?(students)
                 }
                 
         }
@@ -152,18 +152,18 @@ open class UCSCourse {
         UCSUtils.getDataLink(folder.url, headers: headers, filter: UCSConstant.urlIdentifierFile, UCSConstant.urlIdentifierFolder) { (elements: [XMLElement]) in
             UCSActivityIndicator.shared.endTask()
             folder.justChecked()
-            elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
+            elements.filter({ $0["href"]?.contains(UCSConstant.urlIdentifierFolder) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let url = UCSURL.courseMainURL + href
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFolder: self.idSidingFolder(href))
                 self.foundFolder(file, loadContents: loadContents)
             })
-            elements.filter({ $0["href"]?.containsString(UCSConstant.urlIdentifierFile) ?? false }).forEach({
+            elements.filter({ $0["href"]?.contains(UCSConstant.urlIdentifierFile) ?? false }).forEach({
                 guard let text = $0.text, let href = $0["href"] else { return }
                 let name = text
                 let hrefDuplicate = "/siding/dirdes/ingcursos/cursos/"
-                let url = UCSURL.courseMainURL + href.stringByReplacingOccurrencesOfString(hrefDuplicate, withString: "")
+                let url = UCSURL.courseMainURL + href.replacingOccurrences(of: hrefDuplicate, with: "")
                 let file = UCSFile(course: self, filename: name, path: folder.pathCompleted(), url: url, idSidingFile: self.idSidingFile(href))
                 self.foundFile(file)
             })
