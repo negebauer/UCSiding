@@ -1,13 +1,13 @@
 PODS:
-  - Alamofire (4.0.0)
-  - Kanna (1.1.1)
+  - Alamofire (4.0.1)
+  - Kanna (2.0.0)
   - UCSiding (0.2.0):
-    - Alamofire (~> 4.0.0)
-    - Kanna (~> 1.1.1)
+    - Alamofire (~> 4.0.1)
+    - Kanna (~> 2.0.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.0.0)
-  - Kanna (~> 1.1.1)
+  - Alamofire (~> 4.0.1)
+  - Kanna (~> 2.0.0)
   - UCSiding (from `../`)
 
 EXTERNAL SOURCES:
@@ -15,10 +15,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
-  Kanna: 9d3118cff609bd21eb374be5be590b544941160f
-  UCSiding: 984df1a3dbc1801da1570dc1f8ea5f4024aeab9a
+  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
+  Kanna: 9a6637f72f5c77fe9c045b1efb2a5bb074754af8
+  UCSiding: 106cc011fde5e324bf08042e61541ce8aab9435f
 
-PODFILE CHECKSUM: 19f138a1771d357f38beaf6b54d5efeb9521a9ac
+PODFILE CHECKSUM: 3e0f38eb76bc03d88472cf121e271526e78c81f3
 
 COCOAPODS: 1.1.0.beta.1
